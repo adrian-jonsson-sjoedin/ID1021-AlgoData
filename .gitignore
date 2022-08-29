@@ -143,3 +143,10 @@ fabric.properties
 .idea/**/azureSettings.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij
+
+# LaTex
+*.aux
+*.fdb_latexmk
+*.fls
+*.pyg
+*.gz 
