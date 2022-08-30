@@ -2,52 +2,35 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        callAccessWithLargerAndLargerN(1000);
+//        callAccessWithLargerAndLargerN(1000);
+        System.out.println("array size n = 10, nr of searches = 10 000: one element access takes "
+                + access(10, 10_000) + "ns");
+        System.out.println("array size n = 100, nr of searches = 10 000: one element access takes "
+                + access(100, 10_000) + "ns");
+        System.out.println("array size n = 1000, nr of searches = 10 000: one element access takes "
+                + access(1000, 10_000) + "ns");
+        System.out.println("array size n = 10 000, nr of searches = 10 000: one element access takes "
+                + access(10_000, 10_000) + "ns");
+        System.out.println("array size n = 50 000, nr of searches = 50 000: one element access takes "
+                + access(50_000, 50_000) + "ns");
+        System.out.println("array size n = 100 000, nr of searches = 10 000: one element access takes "
+                + access(100_000, 50_000) + "ns");
     }
 
-    public static void callAccessWithLargerAndLargerN(int n) {
-        System.out.println("n went from 1 to " + n);
-        double benchmarkTime = 0;
-        for (int i = 1; i <= n; i++) {
-            benchmarkTime = access(i);
-            //System.out.println("For n = " + i + " we get the resolution " + benchmarkTime + "ns");
-            System.out.println(benchmarkTime);
-        }
 
-    }
-
-    public static void arraySumTime() {
-        int[] given = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
-        int sum = 0;
-        for (int i = 0; i < 10; i++) {
-            long t0 = System.nanoTime();
-            sum += given[i];
-            long t1 = System.nanoTime();
-            System.out.println(" resolution " + (t1 - t0) + " nanoseconds");
-        }
-    }
-
-    public static void forLoopTime() {
-        for (int i = 0; i < 10; i++) {
-            long n0 = System.nanoTime();
-            long n1 = System.nanoTime();
-            System.out.println(" resolution " + (n1 - n0) + " nanoseconds");
-        }
-    }
-
-    private static double access(int n) {
+    private static double access(int arraySize, int nrOfSearches) {
         int k = 1_000_000;
-        int l = n;
+        int l = nrOfSearches;
         //creates an instance of Random to use for generating random numbers
         Random rnd = new Random();
         int[] indx = new int[l];
         // fill the indx array with random number from 0 to n (not including n)
-        for (int i = 0; i < n; i++) {
-            indx[i] = rnd.nextInt(n);
+        for (int i = 0; i < l; i++) {
+            indx[i] = rnd.nextInt(arraySize);
         }
-        int[] array = new int[n];
+        int[] array = new int[arraySize];
 // fill the array with dummy values (why not 1)
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < arraySize; i++) {
             array[i] = 1;
         }
         int sum = 0;
@@ -70,6 +53,7 @@ public class Main {
             }
         }
         long t_dummy = (System.nanoTime() - t0);
-        return ((double) (t_access - t_dummy)) / ((double) k * (double) l);
+        return ((double) (t_access - t_dummy)) / ((double) k * (double) l); // divide by l to get the time for one element
+        //access
     }
 }
