@@ -2,11 +2,18 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-//        forLoopTime();
-//        System.out.println("-------------");
-//        arraySumTime();
-//        System.out.println("-------------");
-        System.out.println(access(10));
+        callAccessWithLargerAndLargerN(1000);
+    }
+
+    public static void callAccessWithLargerAndLargerN(int n) {
+        System.out.println("n went from 1 to " + n);
+        double benchmarkTime = 0;
+        for (int i = 1; i <= n; i++) {
+            benchmarkTime = access(i);
+            //System.out.println("For n = " + i + " we get the resolution " + benchmarkTime + "ns");
+            System.out.println(benchmarkTime);
+        }
+
     }
 
     public static void arraySumTime() {
@@ -59,7 +66,7 @@ public class Main {
 // do the same loop iteration but only do a dummy add operation
         for (int j = 0; j < k; j++) {
             for (int i = 0; i < l; i++) {
-                dummy = 1 + 1;
+                dummy = i + 1;
             }
         }
         long t_dummy = (System.nanoTime() - t0);
