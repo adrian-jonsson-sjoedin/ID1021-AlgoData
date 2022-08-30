@@ -26,39 +26,71 @@ The three operations are:
   \item Duplicates: finding all common values in two arrays.
 \end{itemize}
 
-\section*{Layout}
+\section*{Task 1}
 
-The rows in regular article mode are short - because it makes it
-easier to read. Do not set the column width or margins explicitly, let
-LaTeX decide what it should look like.
+Set up a benchmark where the access method is called on a larger and larger array of size
+\textit{n} and present your conclusions and observations on how much time is needed for a reading
+of a value at a random location in the array.
 
-Don't use any fancy packages that will turn your report into a
-Christmas tree, keep it simple!.
+\section*{Method}
 
-\subsection*{sections}
-
-Since this is a small report I can omit having numbered sections and
-you do this by using section commands that end with a {\tt *}. You can
-of course have subsections etc.
-
-
-\subsection*{inserting code}
-
-Code snippets are included using the package {\tt minted}. If you
-want to include a program statement in running text you can do this
-using for example teletype-text: {\tt List.sort()}.
+To be able to measure the time it takes for one random access of an array of size
+\textit{n}, I used the provided code from the task with some modifications. Mainly I adjusted
+it so that the number of times we searched for an element in the array is not the same as
+the size of the array. Instead we input the size of the array (\textit{n}) and the nr of
+searches into the method call:
 
 \begin{minted}{java}
-  for (int i = 0; i < 100; i++){
-    sum += i;
+  private static double access(int arraySize, int nrOfSearches) {
+    int k = 1_000_000;
+    int l = nrOfSearches;
+   /* code here*/
   }
 \end{minted}
 
-The reports that you hand in should be four pages long - but not four
-pages of code! Use code snippets where you want to describe how things
-are done but don't include code just because you have written it.
+This method will then return a time in nano seconds for the average time of one random array
+access.
 
-\section*{numbers}
+\section*{Result}
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      \textbf{Array size} & \textbf{Nr. of searches} & \textbf{Time in ns} \\
+      \hline
+      10                  & 10 000                   & 0.86                \\
+      100                 & 10 000                   & 0.26                \\
+      1000                & 10 000                   & 0.26                \\
+      10 000              & 10 000                   & 0.31                \\
+      50 000              & 50 000                   & 0.50                \\
+      100 000             & 10 000                   & 0.72                \\
+      \hline
+    \end{tabular}
+    \caption{Output from the program being run once}
+    \label{tab:task1}
+  \end{center}
+\end{table}
+
+
+\section*{Discussion}
+
+It seems like the time to access a random element in an array of
+size \textit{n} increases with the size of the array, which I think is expected.
+The time increase does not seem to be linear but rather a slower time increase than
+that, which if true is good. However the trustworthiness of this result is
+questionable since every time I ran the program it gave me quite different results,
+where sometimes the time being lower and lower for larger \textit{n}, and other times
+having one of the times in the middle being drastically larger than the rest.
+
+I don't know if the reason behind this fluctuation of the time results are buggy code, or
+if it is something that Java does behind the scenes that could somehow change the results.
+It makes more sense that the reason lies in the code since one would think that whatever
+Java might do behind the scenes should be consistent and thus not influence the results.
+But even then I can't find where the problem would lie in the code which leads me to believe
+that the reasons has to be connected to the randomness of the accessing somehow.
+
+\section*{Task 2}
 
 You will include some run-time measurements in your reports. You
 should the think about the number of significant figures that you
