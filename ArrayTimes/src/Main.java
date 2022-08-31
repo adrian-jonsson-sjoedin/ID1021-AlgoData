@@ -2,10 +2,10 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        //  System.out.println(randomArrayElementAccess(10000, 1000000));
-//          benchmarkArrayElementAccess(1000, 100000);
+//          benchmarkArrayElementAccess(1000, 100_000);
 //        System.out.println(searchTime(1000000));
-        benchmarkSearchTime(100_000);
+//        benchmarkSearchTime(10_000);
+        benchmarkDuplicateTime(100000);
     }
 
     /**
@@ -25,10 +25,21 @@ public class Main {
 
     private static void benchmarkSearchTime(int n) {
         int j = 0;
+        for (int i = 1; i <= n; i = 10 * j) {
+            j++;
+//            searchTime(i);
+            System.out.println("n = " + i + "--> " + searchTime(i) + "ns");
+//            System.out.println(searchTime(i));
+        }
+    }
+
+    private static void benchmarkDuplicateTime(int n) {
+        int j = 0;
         for (int i = 1; i <= n; i = 100 * j) {
             j++;
-           // searchTime(n);
-            System.out.println("n = " + i + "--> " + searchTime(i) + "ns");
+//            searchTime(i);
+            System.out.println("n = " + i + "--> " + duplicateTime(i) + "ms");
+//            System.out.println(duplicateTime(i));
         }
     }
 
@@ -96,18 +107,18 @@ public class Main {
 
     private static double searchTime(int n) {
         int k = 1000;
-        int m = 1000;
+        int m = 100_000;
 
         int[] keys = new int[m];
         int[] array = new int[n];
         Random rnd = new Random();
         //populate the key with random values
         for (int j = 0; j < keys.length; j++) {
-            keys[j] = rnd.nextInt(n*10);
+            keys[j] = rnd.nextInt(n * 10);
         }
         //populate the array with random values
         for (int i = 1; i < array.length; i++)
-            array[i] = rnd.nextInt(n*10);
+            array[i] = rnd.nextInt(n * 10);
         long t0 = System.nanoTime();
         for (int ki = 0; ki < m; ki++) {
             int key = keys[ki];
@@ -120,9 +131,39 @@ public class Main {
             }
         }
         long t1 = System.nanoTime();
-        long t_total = t1-t0;
+        long t_total = t1 - t0;
         t_total += (System.nanoTime() - t0);
-        return (t_total/(k*m));
+        return (((double) t_total) / ((double) k * (double) m));
+    }
+
+    private static double duplicateTime(int n) {
+        int[] keys = new int[n];
+        int[] array = new int[n];
+        Random rnd = new Random();
+
+        //populate the key with random values
+        for (int j = 0; j < keys.length; j++) {
+            keys[j] = rnd.nextInt(n * 10);
+        }
+        //populate the array with random values
+        for (int i = 1; i < array.length; i++)
+            array[i] = rnd.nextInt(n * 10);
+        int sum = 0;
+        long t0 = System.nanoTime();
+        for (int ki = 0; ki < n; ki++) {
+            int check = keys[ki];
+            for (int i = 0; i < n; i++) {
+                if (array[i] == check) {
+                    sum++;
+                    break;
+                }
+            }
+        }
+        long t1 = System.nanoTime();
+        long t_total = t1 - t0;
+        t_total += (System.nanoTime() - t0);
+//        return ((double)t_total/((double)n*(double)n));
+    return ((double) t_total) / 1000;
     }
 
 }

@@ -1,6 +1,7 @@
 \documentclass[a4paper,11pt]{article}
-
+\usepackage{graphicx}
 \usepackage[utf8]{inputenc}
+\usepackage{hyperref}
 
 \usepackage{minted}
 
@@ -92,104 +93,61 @@ that the reasons has to be connected to the randomness of the accessing somehow.
 
 \section*{Task 2}
 
-You will include some run-time measurements in your reports. You
-should the think about the number of significant figures that you
-use. Just because a benchmark took $1.2345678 s$ does not mean that
-you should report it in this way. If you write this in your report
-you're implicitly saying - if I do this again the number will be the
-same. This could be true but I doubt that anything you do on a
-computer can be determined with an 8 figure accuracy. The next time
-you try it might very well take $1.2354678 s$. What you report is
-maybe $1.235 s$ or $1.2 s$?
+Search through an array for an element and benchmark how the time to find said element changes for bigger and bigger arrays. 
 
-\subsection*{tables}
+\section*{Method}
 
-Numbers are often best presented in a table. You will have to do some
-reading on how to format tables but the general structures is quite
-easy. This is for example a table with some run-time figures.
+I used the code provided by the teacher and made sure to pick $m > n$ as instructed in the task. I settled for $m = 100 000$ and $k = 1000$.
+ Filling in the code in the section left blank with what seemed appropriate I arrived to the result seen in the section bellow. 
 
-\begin{table}[h]
+\section*{Result}
+
+\begin{figure}[h]
   \begin{center}
-    \begin{tabular}{l|c|c}
-      \textbf{prgm} & \textbf{runtime} & \textbf{ratio} \\
-      \hline
-      dummy         & 115              & 1.0            \\
-      union         & 535              & 4.6            \\
-      tailr         & 420              & 3.6            \\
-    \end{tabular}
-    \caption{Union and friends, list of 50000 elements, runtime in microseconds}
-    \label{tab:table1}
+    \includegraphics[width=\textwidth]{task2dataPlot.png}
+    \caption{Time taken per element search when array size $n \to 10,000$}
+    \label{fig:task2}
   \end{center}
-\end{table}
+\end{figure}
 
-As you see in the table above, the run time per se might not be
-interesting. The interesting thing is how it relates to something
-else. Look at the ratios above, it gives you the information that we
-are looking for. So when you include numbers, ask your self why you
-have these numbers in the report. What is the purpose, can you
-describe it in a better way?
+\section*{Discussion}
 
+It seems like the time taken to search for en element within an array increases linearly with the size of the array. However after we passes around $n=6,000$ 
+the results starts behaving quite weird fluctuating more with multiple peaks. To be completely honest I have no ide why this is. I think it could perhaps be Java's 
+\textit{Just-In-Time} compiler thing that was mentioned in the task. But since I don't know how that thing works I can't say for certain that that's the problem.
 
-\section*{no f*ing screen shots}
+Furthermore I also don't quite understand the connection between \textit{k}, \textit{m} and \textit{n} in the provided code. Changing this values affected the time
+reported by the program, but not the overall linearity of it. 
 
-I know that you are all very happy that things actually work and
-eagerly want to show what things look like on you screen but please,
-don't use {\em screen shots}. It looks ugly and it's impossible to mark or
-copy the things that you want to show. It also, most often, show a lot
-of irrelevant things so instead of using an image, copy the text and
-format it so it's easy to read.
+\section*{Task 3}
 
-\section*{graphs}
+Find duplicates in two arrays of length \textit{n}. Estimate how n you would be able to handle if you had an hour of computation time.
 
-Once you start to generate graphs make sure that they are readable and
-have sensible information on the axes.
+\section*{Method}
+For this task there was no code provided by the teacher, but since the task is basically the same as in task 2, the solution only required a small modification to 
+the code from task 2, mainly making sure the arrays had the same size.
 
-There are many ways to generate graphs but you want to
-use a way that minimize manual work. My tool over the years has been
-  {\em Gnuplot} and if you do not have a favorite tool you could give it
-a try.
+\section*{Result}
 
-Gnuplot is not a statistical program nor a program that is very good at
-manipulating numbers but it is very good at taking a sequence of
-numbers and generate a nice graph.
+\begin{figure}[h!]
+  \begin{center}
+    \includegraphics[width=\textwidth]{task3plot.png}
+    \caption{Time taken to find all duplicates when $n\to 10,000$}
+  \end{center}
+\end{figure}
 
-\section*{\LaTeX things}
+\section*{Discussion}
+To be completely honest I didn't understand exactly what the difference was between this task and task 2 since it seemed like you asked us to check the same thing.
+In task 2. You ask us to search for a an element in an array by using a key array that contains random elements. In task 3 you ask us to search for elements that 
+are in both arrays. The only difference seemed to be the array size. I'm assuming I missed something when doing this task but I've asked a lot of other people taking
+the course and they seemed as lost as me when it came to these tasks. My conclusion on task 3 is thus that I can't reach any conclusions since I don't really 
+understand what you're asking for and I'm pretty sure that the result seen in figure 2 is misleading. 
 
-Some \LaTeX errors that I frequently see that could easily be avoided
-if you only know where they come from.
+Reflecting back on these task there aren't really anything I could have done differently. I've spent probably around 18 hours on this assignment and I feel that even 
+if I had double that time left I would still be stuck. The problem is simply that I, and everyone else I've asked (10+ people) simply don't understand your instruction, 
+what are feasible results and the theory behind it.\\
 
-\section*{less than}
-
-If you in your LaTeX code write "5 \textless\ 7" it will look like 5 <
-7 and "9 \textgreater\ 7" will look like 9 > 7. Using the characters
-\textless\ and \textgreater\ directly does not work ... so, how did I
-do it?  I used the commands {\tt  \textbackslash textless} and {\tt
-    \textbackslash textgreater} to generate the symbols \textless\ and
-\textgreater.
-
-You could also use {\tt \{\textbackslash tt 5 < 7\}} but then it
-will use the teletype font and look like this: {\tt 5 < 7}.
-
-Still another way is to write it using so called {\tt math mode}. This
-is a mode used for writing mathematical formulas in a nice way. You
-enclose your expression in {\tt \$} signs like this {\tt \$5 < 7\$}
-and then it will look like this $5 < 7$.
-
-If you have a larger mathematical expression you enclose it in double
-\$ and the result is that it is written centered with some space
-around it like this:  $$ 5 < (3 * 8 / 3 ) $$
-
-\subsection*{why strange font}
-
-If you want to write {\em foo} in teletype font you write like this
-\verb+{\tt foo}+. If you forget the closing \} then it will look like
-this: {\tt foo. Now everything here after until the end of you report
-will look like this. }
-
-
-
-
-
+Link to code \hyperlink{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/blob/main/ArrayTimes/src/Main.java}{GitHub}
 
 
 \end{document}
