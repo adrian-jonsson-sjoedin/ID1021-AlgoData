@@ -2,20 +2,44 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-      //  System.out.println(randomArrayElementAccess(10000, 1000000));
-    benchmark(1000,100000);
+        //  System.out.println(randomArrayElementAccess(10000, 1000000));
+//          benchmarkArrayElementAccess(1000, 100000);
+//        System.out.println(searchTime(1000000));
+        benchmarkSearchTime(100_000);
     }
 
-    public static void benchmark(int n, int loops) {
+    /**
+     * Method that let us run the random array element access for arrays up to size n. Increments in array size of 10.
+     *
+     * @param n     maximum array size
+     * @param loops number of loops per element access.
+     */
+    public static void benchmarkArrayElementAccess(int n, int loops) {
         int j = 1;
         for (int i = 1; i <= n; i = 10 * j) {
             j++;
-            randomArrayElementAccess(n,loops);
-            System.out.println("n = " + i + "--> " + randomArrayElementAccess(n, loops) + "ns");
+            randomArrayElementAccessTime(n, loops);
+            System.out.println("n = " + i + "--> " + randomArrayElementAccessTime(i, loops) + "ns");
         }
     }
 
-    private static double randomArrayElementAccess(int arraySize, int loops) {
+    private static void benchmarkSearchTime(int n) {
+        int j = 0;
+        for (int i = 1; i <= n; i = 100 * j) {
+            j++;
+           // searchTime(n);
+            System.out.println("n = " + i + "--> " + searchTime(i) + "ns");
+        }
+    }
+
+    /**
+     * measures the time it takes to access one random element in an array
+     *
+     * @param arraySize the size of the array
+     * @param loops     the number of times we run the access loop. More gives a better result
+     * @return the average time for one random element access returned as a double.
+     */
+    private static double randomArrayElementAccessTime(int arraySize, int loops) {
         int[] randomArray = randomArray(arraySize);
         int[] randomArrayIndex = randomArraysIndex(randomArray);
         int sum = 0;
@@ -70,33 +94,35 @@ public class Main {
     }
 
 
-    private static double searchTime(int nrOfRounds, int nrOfSearchOperationsPerRound, int arraySize) {
-        int[] keys = new int[nrOfSearchOperationsPerRound];
-        int[] array = new int[arraySize];
+    private static double searchTime(int n) {
+        int k = 1000;
+        int m = 1000;
+
+        int[] keys = new int[m];
+        int[] array = new int[n];
         Random rnd = new Random();
-        //fill the two arrays with random numbers
+        //populate the key with random values
         for (int j = 0; j < keys.length; j++) {
-            keys[j] = rnd.nextInt(10 * arraySize);
+            keys[j] = rnd.nextInt(n*10);
         }
-        for (int i = 0; i < array.length; i++) {
-            array[i] = rnd.nextInt(10 * arraySize);
-        }
-        int sum = 0;
+        //populate the array with random values
+        for (int i = 1; i < array.length; i++)
+            array[i] = rnd.nextInt(n*10);
         long t0 = System.nanoTime();
-        long tTotal = 0;
-        for (int k = 0; k < nrOfSearchOperationsPerRound; k++) {
-            int key = keys[k];
-            for (int i = 0; i < arraySize; i++) {
+        for (int ki = 0; ki < m; ki++) {
+            int key = keys[ki];
+            int sum = 0;
+            for (int i = 0; i < n; i++) {
                 if (array[i] == key) {
                     sum++;
                     break;
                 }
             }
         }
-        tTotal += (System.nanoTime() - t0);
-        for (int i = 0; i < array.length; i++) {
-            System.out.println(array[i]);
-        }
-        return ((double) tTotal / (nrOfSearchOperationsPerRound * nrOfRounds));
+        long t1 = System.nanoTime();
+        long t_total = t1-t0;
+        t_total += (System.nanoTime() - t0);
+        return (t_total/(k*m));
     }
+
 }
