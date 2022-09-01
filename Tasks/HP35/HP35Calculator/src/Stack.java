@@ -2,43 +2,39 @@ import java.util.EmptyStackException;
 
 public class Stack {
     private int[] arr;
-    private int index = 0;
+    private int index;
 
     public Stack() {
+        index = -1;
         arr = new int[4];
     }
 
     public void push(int element) {
-
         if (isFull()) {
             throw new StackOverflowError("Stack is full");
         }
-
-        arr[index] = element;
-        index++;
+        arr[++index] = element;
     }
-
     public int pop() {
 
         if (isEmpty()) {
             throw new EmptyStackException();
         }
-        return arr[--index];
+        return arr[index--];
     }
 
     public boolean isEmpty() {
-        if (index == 0) {
+        if (index == -1) {
             return true;
         }
         return false;
     }
 
     public boolean isFull() {
-        if (index == 4) {
+        if (index + 1 == arr.length) {
             return true;
         }
         return false;
     }
-
 
 }
