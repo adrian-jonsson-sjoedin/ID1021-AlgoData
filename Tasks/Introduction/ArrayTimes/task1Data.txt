@@ -1,0 +1,6 @@
+array size n = 10, nr of searches = 10 000: one element access takes 0.8574033951ns
+array size n = 100, nr of searches = 10 000: one element access takes 0.266088579ns
+array size n = 1000, nr of searches = 10 000: one element access takes 0.2572353246ns
+array size n = 10 000, nr of searches = 10 000: one element access takes 0.3075725287ns
+array size n = 50 000, nr of searches = 10 000: one element access takes 0.5017622976ns
+array size n = 100 000, nr of searches = 50 000: one element access takes 0.7212683595ns
