@@ -15,8 +15,13 @@ public class Main {
 //        dynamicStackTest();
 
         /*Benchmarking*/
-//        benchmarkStaticCalc(1_000_000);
-//        benchmarkDynamicCalc(1_000_000);
+
+        benchmarkStaticCalc(1_000);
+        benchmarkDynamicCalc(1_000);
+        benchmarkStaticCalc(10_000);
+        benchmarkDynamicCalc(10_000);
+        benchmarkStaticCalc(1_000_000);
+        benchmarkDynamicCalc(1_000_000);
 
         DynamicCalculator socialCalc = new DynamicCalculator(new Item[]{new Item(10), new Item(9), new Item(2), new Item(ItemType.MUL),
                 new Item(ItemType.MULTOADD), new Item(4), new Item(4), new Item(7), new Item(2),
