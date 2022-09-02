@@ -13,15 +13,26 @@ public class Main {
 //        dynamicCalculator.stack.display();
 
 //        dynamicStackTest();
-        benchmarkStaticCalc(1_000_000);
-        benchmarkDynamicCalc(1_000_000);
+
+        /*Benchmarking*/
+//        benchmarkStaticCalc(1_000_000);
+//        benchmarkDynamicCalc(1_000_000);
+
+        DynamicCalculator socialCalc = new DynamicCalculator(new Item[]{new Item(10), new Item(9), new Item(2), new Item(ItemType.MUL),
+                new Item(ItemType.MULTOADD), new Item(4), new Item(4), new Item(7), new Item(2),
+                new Item(5), new Item(ItemType.MUL), new Item(ItemType.MULTOADD), new Item(1),
+                new Item(2), new Item(7), new Item(ItemType.MUL), new Item(ItemType.MULTOADD), new Item(ItemType.ADD),
+                new Item(ItemType.ADD), new Item(ItemType.ADD), new Item(ItemType.ADD), new Item(ItemType.ADD), new Item(ItemType.ADD),
+                new Item(ItemType.MOD), new Item(ItemType.SUB)});
+        System.out.println(socialCalc.run());
     }
-//generates a random expression that will fill up the stack to the fourth position
+
+    //generates a random expression that will fill up the stack to the fourth position
     public static Item[] generateRandomExpression() {
         Random rnd = new Random();
         Item[] expression = new Item[1000];
         for (int i = 0; i <= 500; i++) {
-            expression[i] = new Item(rnd.nextInt(- 10_000, 10_000));
+            expression[i] = new Item(rnd.nextInt(-10_000, 10_000));
         }
         for (int j = 501; j < 1000; j++) {
             expression[j] = new Item(ItemType.ADD);
@@ -42,25 +53,26 @@ public class Main {
                 min = (double) (endTime - startTime);
             }
         }
-      //  double averageTimePerCalculation = sum / loops;
+        //  double averageTimePerCalculation = sum / loops;
         System.out.println("Static stack: " + min + "ns");
     }
 
-public static void benchmarkDynamicCalc(int loops){
-    long startTime;
-    long endTime;
-    double min = Double.MAX_VALUE;
+    public static void benchmarkDynamicCalc(int loops) {
+        long startTime;
+        long endTime;
+        double min = Double.MAX_VALUE;
         for (int i = 0; i < loops; i++) {
-        DynamicCalculator cal = new DynamicCalculator(generateRandomExpression());
-        startTime = System.nanoTime();
-        cal.run();
-        endTime = System.nanoTime();
+            DynamicCalculator cal = new DynamicCalculator(generateRandomExpression());
+            startTime = System.nanoTime();
+            cal.run();
+            endTime = System.nanoTime();
             if (((double) (endTime - startTime)) < min) {
                 min = (double) (endTime - startTime);
             }
-    }
+        }
         System.out.println("Dynamic stack: " + min + "ns");
-}
+    }
+
     public static void stackTest() {
         Stack stack = new Stack();
         stack.push(4);

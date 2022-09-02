@@ -22,13 +22,13 @@ public class DynamicCalculator {
             case ADD -> {
                 int y = stack.pop();
                 int x = stack.pop();
-                int res = x +y;
+                int res = x + y;
                 stack.push(res);
             }
             case SUB -> {
                 int y = stack.pop();
                 int x = stack.pop();
-                int res = x-y;
+                int res = x - y;
                 stack.push(res);
             }
             case DIV -> {
@@ -40,6 +40,16 @@ public class DynamicCalculator {
                 int y = stack.pop();
                 int x = stack.pop();
                 stack.push(x * y);
+            }
+            case MOD -> {
+                int y = stack.pop();
+                stack.push(y % 10);
+            }
+            case MULTOADD -> {
+                int x = stack.pop();
+                int y = x / 10;
+                int z = x % 10;
+                stack.push(y + z);
             }
             case VALUE -> {
                 stack.push(next.getValue());

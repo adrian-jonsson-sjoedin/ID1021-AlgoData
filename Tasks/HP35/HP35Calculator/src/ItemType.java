@@ -5,6 +5,8 @@ public enum ItemType {
     SUB,
     MUL,
     DIV,
+    MOD,
+    MULTOADD,
     VALUE;
 
     public static ItemType getRandomType() {
