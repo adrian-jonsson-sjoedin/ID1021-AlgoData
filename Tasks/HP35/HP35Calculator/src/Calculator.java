@@ -34,12 +34,11 @@ public class Calculator {
                 int res = x-y;
                 stack.push(res);
             }
-            /*Needed to comment out this for generating random operation to avoid dividing by zero*/
-//            case DIV -> {
-//                int y = stack.pop();
-//                int x = stack.pop();
-//                stack.push(x / y);
-//            }
+            case DIV -> {
+                int y = stack.pop();
+                int x = stack.pop();
+                stack.push(x / y);
+            }
             case MUL -> {
                 int y = stack.pop();
                 int x = stack.pop();
