@@ -6,7 +6,7 @@ public class Stack {
 
     public Stack() {
         index = -1;
-        arr = new int[4];
+        arr = new int[1000];
     }
 
     public void push(int element) {

@@ -31,11 +31,12 @@ public class DynamicCalculator {
                 int res = x-y;
                 stack.push(res);
             }
-            case DIV -> {
-                int y = stack.pop();
-                int x = stack.pop();
-                stack.push(x / y);
-            }
+            /*Needed to comment out this for generating random operation to avoid dividing by zero*/
+//            case DIV -> {
+//                int y = stack.pop();
+//                int x = stack.pop();
+//                stack.push(x / y);
+//            }
             case MUL -> {
                 int y = stack.pop();
                 int x = stack.pop();

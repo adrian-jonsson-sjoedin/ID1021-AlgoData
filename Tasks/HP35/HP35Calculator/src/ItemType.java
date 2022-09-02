@@ -1,7 +1,14 @@
+import java.util.Random;
+
 public enum ItemType {
     ADD,
     SUB,
     MUL,
     DIV,
-    VALUE
+    VALUE;
+
+    public static ItemType getRandomType() {
+        Random random = new Random();
+        return values()[random.nextInt(values().length-1)];
+    }
 }
