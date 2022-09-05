@@ -1,7 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-  \PYG{k+kd}{private} \PYG{k+kd}{static} \PYG{k+kt}{double} \PYG{n+nf}{access}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{arraySize}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{nrOfSearches}\PYG{p}{)} \PYG{p}{\PYGZob{}}
-    \PYG{k+kt}{int} \PYG{n}{k} \PYG{o}{=} \PYG{l+m+mi}{1\PYGZus{}000\PYGZus{}000}\PYG{p}{;}
-    \PYG{k+kt}{int} \PYG{n}{l} \PYG{o}{=} \PYG{n}{nrOfSearches}\PYG{p}{;}
-   \PYG{c+cm}{/* code here*/}
-  \PYG{p}{\PYGZcb{}}
-\end{Verbatim}
