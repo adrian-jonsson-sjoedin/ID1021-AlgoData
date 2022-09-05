@@ -33,8 +33,7 @@ public class Main {
             int key = rnd.nextInt(maxArraySize);
             long timeStart = System.nanoTime();
             searchUnsorted(arrayToSearch, key);
-            double searchTime = (double) (System.nanoTime() - timeStart);
-            sum += searchTime;
+            sum += (double) (System.nanoTime() - timeStart) ;
         }
         return sum / 1000000;
     }
