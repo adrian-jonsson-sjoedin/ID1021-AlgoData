@@ -41,49 +41,42 @@ public static double benchmarkUnsortedSearch(int maxArraySize) {
   Random rnd = new Random();
   int[] arrayToSearch = new int[maxArraySize];
   double sum = 0;
-  for (int i = 0; i < 1_000_000; i++) {
+  for (int i = 0; i < 100_000; i++) {
     int key = rnd.nextInt(maxArraySize);
     long timeStart = System.nanoTime();
     searchUnsorted(arrayToSearch, key);
     sum += (double) (System.nanoTime() - timeStart) ;
   }
-  return sum / 1000000;
+  return sum / 100_000;
 }
 \end{minted}
-
-
 
 \section*{Result}
 To benchmark the different stacks we measured the best time out of $n$ runs that it took for the calculator to
 calculate an expression with 500 values followed by 499 add operations.
-\begin{table}
-  \begin{center}
-    \begin{tabular}{|c|c|c|c|}
-      \hline
-      \textbf{Stack} & \textbf{Number of calculations} & \textbf{Time in ns} & \textbf{Time increase} \\
-      \hline
-      Static         & 1 000                           & 2439                & -                      \\
-      Dynamic        & 1 000                           & 10010               & 4.1                    \\
-      \hline
-      Static         & 10 000                          & 2251                & -                      \\
-      Dynamic        & 10 000                          & 6410                & 2.8                    \\
-      \hline
-      Static         & 1 000 000                       & 1702                & -                      \\
-      Dynamic        & 1 000 000                       & 5033                & 2.9                    \\
-      \hline
-    \end{tabular}
-    \caption{Stack benchmarks}
-    \label{tab:task1}
-  \end{center}
-\end{table}
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{unsortedSearch.png}
+  \caption{Unsorted Search}
+  \label{fig:unsortedSearch}
+\end{figure}
 
 
 \section*{Discussion}
 
+In plot \ref{fig:unsortedSearch} we can clearly see that the time complexity for the unsorted search was $\mathcal{O}(n)$. This was expected since
+the searching algorithm will have to go through each element from element $0$ up to element $n$, which is an operation of time complexity 
+$\mathcal{O}(n)$. 
+
+The reason why I measured the average time for a search in the benchmark test is because I generated a random key to search for each time, and 
+if I would have taken just the shortest amount of time it took to find said key then the result would be about the same no matter the size of the
+array. This  since it is highly likely that out of the $100,000$ runs of the search algorithm for each array size, a key with a value close to, or
+the same as, index $0$ would be generated. This taking the average will give a result that more accurately reflects reality.
 
 \section*{Task 2}
 
-
+Using the sorting method provided examine how long it will take to find a random key in a sorted array. Furthermore estimate how long time it would 
+take to search through an array of a million entries.
 \section*{Method}
 
 
