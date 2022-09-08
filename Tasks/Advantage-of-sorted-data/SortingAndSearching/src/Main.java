@@ -11,19 +11,49 @@ public class Main {
 //    }
 //       }
 //        System.out.printf("%f%n 16M",  benchmarkBinarySearch(64_000_000));
+        int[] a = new int[]{1, 2, 4, 6};
+        int[] b = new int[]{2, 3, 5, 6, 7};
+        System.out.printf("first array: ");
+        for (int i = 0; i < a.length; i++) {
+            System.out.printf("%d ", a[i]);
+        }
+        System.out.println();
+        System.out.printf("second array: ");
+        for (int i = 0; i < b.length; i++) {
+            System.out.printf("%d ", b[i]);
+        }
+        System.out.println();
+        betterDuplicateSearch(a, b);
 
 
     }
 
     public static void duplicateSearch(int[] sortedArray1, int[] sortedArray2) {
         for (int i = 0; i < sortedArray1.length; i++) {
-            binarySearch(sortedArray2,sortedArray1[i]);
+            binarySearch(sortedArray2, sortedArray1[i]);
         }
     }
 
     public static void betterDuplicateSearch(int[] sortedArray1, int[] sortedArray2) {
-        
+        int index1 = 0;
+        int index2 = 0;
+        while (index1 < (sortedArray1.length)) {
+            if (sortedArray2[index2] < sortedArray1[index1]) {
+                index2++;
+            } else if (sortedArray1[index1] == sortedArray2[index2]) {
+                index1++;
+                System.out.println("duplicate found! " + sortedArray1[index1 - 1] + sortedArray2[index2]);
+                if (index1 == sortedArray1.length - 1) {
+                    break;
+                }
+            } else if (sortedArray1[index1] < sortedArray2[index2]) {
+                index1++;
+            }
+            System.out.println("no more duplicates");
+            System.out.println(index1);
+        }
     }
+
     public static boolean binarySearch(int[] array, int key) {
         int low = 0;
         int high = array.length - 1;
@@ -39,6 +69,7 @@ public class Main {
         }
         return false;
     }
+
     public static double benchmarkBinarySearch(int maxArraySize) {
         Random rnd = new Random();
         int[] arrayToSearch = createSortedArray(maxArraySize);
@@ -128,7 +159,6 @@ public class Main {
         }
         return rndArray;
     }
-
 
 
 }
