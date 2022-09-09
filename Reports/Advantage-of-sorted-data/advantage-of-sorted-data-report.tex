@@ -16,7 +16,7 @@
 \begin{document}
 
 \title{
-  \textbf{HP35 Calculator Report.}
+  \textbf{Advantage of Sorted Data Report.}
 }
 \author{Adrian Jonsson Sjödin}
 \date{Fall 2022}
@@ -147,12 +147,74 @@ will take $170ns$ to search through an array of size 64 million.
 
 \section*{Task 4}
 
-Search through two sorted array for duplicated elements. Do this by implementing the binary
+Search through two sorted array for duplicated elements. Do this first by implementing the binary
 search algorithm to try and get the time complexity down under $\mathcal{O}(n^2)$.
 \section*{Method}
+There's two different ways we can achieve this task. The first and easiest way is to simply
+loop through the first sorted array linearly and use each element as the search parameter for the
+binary search method from task 3. This should in theory achieve a time complexity of
+$\mathcal{O}(n\cdot log(n))$.
+
+The second method is to take advantage of the fact that both arrays are sorted from low to high.
+Instead of searching through one of the arrays linearly and the other one with binary search we can
+instead look at the elements in both arrays simultaneously and compare them. I've included the code
+bellow for just the comparing algorithm since it is easier to understand how it works that way rather
+than me trying to explain in words.
+
+\begin{minted}{java}
+while (index1 < (sortedArray1.length) && 
+        index2 < sortedArray2.length) {
+  if (sortedArray2[index2] < sortedArray1[index1]) {
+    index2++;
+  } else if (sortedArray1[index1] == sortedArray2[index2]) {
+    System.out.println("Duplicate found! " + sortedArray1[index1] + 
+    " " + sortedArray2[index2]);
+    index1++;
+  } else if (sortedArray1[index1] < sortedArray2[index2]) {
+    index1++;
+  }
+}
+    
+\end{minted}
+This method should in theory have a time complexity of $\mathcal{O}(n)$ since while we're going
+through two arrays from start to finish, we are going through them at the same time.
 
 \section*{Result}
+The result for the first method can be seen in fig. \ref{fig:duplicateSearch} and the second method
+in fig. \ref{fig:betterDuplicate}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{duplicateSearch.pdf}
+  \caption{Duplicate search}
+  \label{fig:duplicateSearch}
+\end{figure}
 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{betterDuplicateSearch.pdf}
+  \caption{Optimized duplicate search}
+  \label{fig:betterDuplicate}
+\end{figure}
 \section*{Discussion}
+The first method seen, in fig. \ref{fig:duplicateSearch}, was expected to be of time complexity
+$\mathcal{O}(n\cdot log(n))$ but seem to be of time complexity $\mathcal{O}(n)$ instead. As in task 2
+we get that the equation $t(n)=0.04\cdot n$ approximates how the execution time (in $\mu s$) increases with the
+size of the array. The reason for this linear time increase as opposed to the expected time increase
+is for me unknown, but a guess is that I simply didn't run my measurements on arrays of a sufficient
+size.
 
+The results for the second optimized method of searching for duplicates
+(fig. \ref{fig:betterDuplicate}) however seem to better match with what was expected. It can clearly
+be seen that the time complexity here is $\mathcal{O}(n)$ with the following equation approximating
+the time increase for arrays of size $n>1800$: $t(n)=8.5\cdot 10^{-3}n$
+For smaller arrays it is still linear but with an even smaller coefficient. This is most likely do to
+the physical hardware and where the array is stored. For the smaller arrays they might be stored in the
+first cache which is faster to access and then when the array becomes to large they have to be stored
+outside this cache, thus changing the time coefficient.
+
+Whatever the case is though it is clear that this optimized version is faster than the first method,
+and vastly better than doing a liner search through two arrays like we did for the first assignment.
+Enough so that it is worth considering sorting the arrays before running the searching algorithm.
+
+The code for this assignment can be found here \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/blob/main/Tasks/Advantage-of-sorted-data/SortingAndSearching/src/Main.java}{GitHub}
 \end{document}
