@@ -1,12 +1,12 @@
 public class SelectionSort {
 
-
     
     public int[] selectionShort(int[] array){
         int minIndex;
         int temp;
         for(int i = 0; i< array.length - 1; i++){
             minIndex = i;
+            //find minimum element in an unsorted array
             for(int j = i+1; j< array.length; j++){
                 if(array[j] < array[minIndex]){
                     minIndex = j;
