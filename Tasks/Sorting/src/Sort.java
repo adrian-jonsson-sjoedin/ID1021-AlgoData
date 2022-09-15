@@ -50,4 +50,25 @@ public class Sort {
             array[j + 1] = min;
         }
     }
+
+
+
+
+    public static void sort(int[] original){
+        if(original.length == 0){
+            return;
+        }
+        int[] auxillary = new int[original.length];
+        sort(original, auxillary, 0, original.length-1);
+    }
+
+    public static void sort(int[] original, int[] auxillary, int low, int high){
+        if(low != high){
+            int middle = low + (high-low)/2;
+        }
+    }
+    
+    public static void merge(int[] array){
+    
+    }    
 }
