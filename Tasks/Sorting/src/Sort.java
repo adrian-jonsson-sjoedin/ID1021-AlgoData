@@ -54,7 +54,7 @@ public class Sort {
 
 
 
-    public static void sort(int[] original){
+    public static void mergeSort(int[] original){
         if(original.length == 0){
             return;
         }
@@ -62,13 +62,18 @@ public class Sort {
         sort(original, auxillary, 0, original.length-1);
     }
 
-    public static void sort(int[] original, int[] auxillary, int low, int high){
+    private static void sort(int[] original, int[] auxillary, int low, int high){
         if(low != high){
             int middle = low + (high-low)/2;
+        
+        
+        
+        
+            merge(original, auxillary, low, middle, high);
         }
     }
     
-    public static void merge(int[] array){
-    
+    private static void merge(int[] original, int[] auxillary, int low, int middle, int high){
+            
     }    
 }
