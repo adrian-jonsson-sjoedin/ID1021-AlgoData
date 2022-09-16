@@ -63,11 +63,12 @@ visualizes this in a good way.
     \label{fig:mergeSort}
 \end{figure}
 I haven't included the code fort the recursive call here in the report since the teacher already went through that part during his lecture, and thus would be
-redundant to show again, but for those interested all the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/blob/main/Tasks/Sorting/src}{GitHub}
+redundant to show again, but for those interested all the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/blob/main/Tasks/Sorting/src}{GitHub}.
+The time complexity for the merge sort algorithm should be $\mathcal{O}(n\cdot log(n))$.
 
 \section*{Result}
-Bellow you can see the data from the benchmarked run for the different algorithms as well as plots over how the time execution increase with the array size. The 
-benchmark is the minimum average time it took to sort an array of size n over 1000 loops.
+Bellow in table \ref{tab:benchmark} and figure \ref{fig:selectInsert}-\ref{fig:merge} you can see the data from the benchmarked run for the different algorithms
+ as well as plots over how the time execution increase with the array size. The benchmark is the minimum average time it took to sort an array of size n over 1000 loops.
 \begin{table}[h!]
     \begin{center}
         \begin{tabular}{|c|c|c|c|c|c|}
@@ -103,7 +104,14 @@ benchmark is the minimum average time it took to sort an array of size n over 10
     \label{fig:merge}
 \end{figure}
 \section*{Discussion}
+As can be seen from the benchmark in table \ref{tab:benchmark} the Selection Sort is the slowest algorithm followed by the Insertion Sort, and then Merge Sort as
+the fastest out of the three. The Insertion sort seems to be on average $185\%$ faster than Selection Sort, and Merge sort even faster with the percentage by how 
+much raising for larger array sizes. From figure \ref{fig:selectInsert} we can also see that the time execution for Selection and Insertion sort takes on the form 
+of a second degree polynomial, and thus confirm our assumption of them being of time complexity $\mathcal{O}(n^2)$. If we had run the benchmark with more data 
+points and not just a doubling of $n$ for each measurement the plot would likely have been an even closer match to the trend line seen in figure \ref{fig:selectInsert}.
+Either way it is clear that Insertion sort is vastly faster than Selection sort and should be the sorting algorithm to choose between the two of them.
 
+The Merge sort algorithm 
 
 
 
