@@ -92,14 +92,14 @@ Bellow in table \ref{tab:benchmark} and figure \ref{fig:selectInsert}-\ref{fig:m
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=.8\textwidth]{Select and Insert Sort.pdf}
+    \includegraphics[width=\textwidth]{Select and Insert Sort.pdf}
     \caption{Select vs. Insert Sort}
     \label{fig:selectInsert}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=.8\textwidth]{Merge Sort.pdf}
+    \includegraphics[width=\textwidth]{Merge Sort.pdf}
     \caption{Merge Sort}
     \label{fig:merge}
 \end{figure}
@@ -111,7 +111,18 @@ of a second degree polynomial, and thus confirm our assumption of them being of 
 points and not just a doubling of $n$ for each measurement the plot would likely have been an even closer match to the trend line seen in figure \ref{fig:selectInsert}.
 Either way it is clear that Insertion sort is vastly faster than Selection sort and should be the sorting algorithm to choose between the two of them.
 
-The Merge sort algorithm 
+The Merge sort algorithm is the fastest out of the three with it being $3,550\%$ faster than selection sort for the largest array size of $n=12,800$. It is thus 
+evident that Merge sort is the most effective algorithm. Figure \ref{fig:merge} shows us that the graph is nearly linear in a log-log scale which means that the 
+time complexity is the expected $\mathcal{O}(n\cdot log(n))$. This also explains why it is so much faster than the other two algorithms.
+
+Another advantages of merge sort is that it splits the list into smaller and smaller chunks without changing the order of the element first. This means that the 
+general order of the elements is preserved throughout the array, i.e. two identical elements in an unsorted array will have the same relative position to each 
+other after the sorting is done.
+
+Lastly it is possible to improve the Merge sort algorithm by switching to another sorting algorithm for the small subarrays in the merge. Switching to insertion sort
+for example will improve the running time by up to $10-15\%$\footnote{https://algs4.cs.princeton.edu/22mergesort/}.
+
+Once again all code for this assignment can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/blob/main/Tasks/Sorting/src}{GitHub}.
 
 
 
