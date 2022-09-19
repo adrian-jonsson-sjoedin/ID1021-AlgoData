@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * A simple linked list class. Last in first out.
  */
@@ -92,11 +94,20 @@ public class LinkedList {
         }
     }
 
-    public void append(LinkedList linkedList) {
+    public void appendEnd(LinkedList linkedList) {
         Node current = this.head;
-        while(current.next!=null){
+        while (current.next != null) {
             current = current.next;
         }
         current.next = linkedList.head;
+    }
+
+    public void appendFirst(LinkedList linkedList) {
+        Node current = linkedList.head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = this.head;
+        this.head = linkedList.head;
     }
 }

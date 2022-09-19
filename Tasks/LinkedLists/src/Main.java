@@ -12,7 +12,7 @@ public class Main {
         list2.add(4);
         list2.add(5);
         list2.add(6);
-        list.append(list2);
+        list.appendFirst(list2);
         list.display();
     }
 }
