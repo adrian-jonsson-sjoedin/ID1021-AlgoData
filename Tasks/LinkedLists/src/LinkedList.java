@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.Random;
 
 /**
  * A simple linked list class. Last in first out.
@@ -109,5 +109,89 @@ public class LinkedList {
         }
         current.next = this.head;
         this.head = linkedList.head;
+    }
+
+    public double benchmarkAdd(int nrOfAddOperations, int iterations) {
+        Random rand = new Random();
+        double min = Double.POSITIVE_INFINITY;
+        double time;
+        for (int i = 0; i < iterations; i++) {
+            LinkedList list = new LinkedList();
+            for (int j = 0; j < nrOfAddOperations; j++) {
+                double timeStart = System.nanoTime();
+                list.add(rand.nextInt(nrOfAddOperations));
+                time = System.nanoTime() - timeStart;
+                if (time < min) {
+                    min = time;
+                }
+            }
+        }
+        return min;
+    }
+
+    public double benchmarkAppendEnd(int aSize, int iterations) {
+        double min = Double.POSITIVE_INFINITY;
+        double timeStart;
+        double time;
+        for (int m = 0; m < iterations; m++) {
+            LinkedList b = new LinkedList();
+            LinkedList a = new LinkedList();
+            for (int i = 1; i <= 20; i++) {// create fixed linkedlist b
+                b.add(i);
+            }
+            // create linkedlist a with increasing size
+            for (int j = 21; j <= aSize + 21; j++) {
+                a.add(j);
+            }
+            timeStart = System.nanoTime();
+            b.appendEnd(a);
+            time = System.nanoTime() - timeStart;
+            if (time < min) {
+                min = time;
+            }
+        }
+        return min;
+    }
+
+    public double benchmarkAppendFirst(int aSize, int iterations) {
+        double min = Double.POSITIVE_INFINITY;
+        double timeStart;
+        double time;
+        for (int m = 0; m < iterations; m++) {
+            LinkedList b = new LinkedList();
+            LinkedList a = new LinkedList();
+            for (int i = 1; i <= 20; i++) {// create fixed linkedlist b
+                b.add(i);
+            }
+            // create linkedlist a with increasing size
+            for (int j = 21; j <= aSize + 21; j++) {
+                a.add(j);
+            }
+            timeStart = System.nanoTime();
+            b.appendFirst(a);
+            time = System.nanoTime() - timeStart;
+            if (time < min) {
+                min = time;
+            }
+        }
+        return min;
+    }
+
+    /*
+     * Main method for class for testing that the add, remove and append method
+     * works as intended.
+     */
+    public static void main(String[] args) {
+        LinkedList list = new LinkedList();
+        LinkedList list2 = new LinkedList();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.display();
+        list2.add(4);
+        list2.add(5);
+        list2.add(6);
+        list.appendEnd(list2);
+        list.display();
     }
 }
