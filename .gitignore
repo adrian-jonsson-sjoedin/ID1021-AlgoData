@@ -155,3 +155,4 @@ fabric.properties
 *.gz 
 ArrayTimes/.idea/workspace.xml
 *_minted*
+*.out
