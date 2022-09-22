@@ -55,23 +55,43 @@ of this.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{linkedListDiagram.pdf}
+    \includegraphics[width=.8\textwidth]{linkedListDiagram.pdf}
     \caption{Depiction of node implementation in a linked list}
     \label{fig:linkedListDiagram}
 \end{figure}
 When we want to add a new value to the list, the linked list class then only need to keep track of the \textit{head} 
 node and rereference it to point at the new node, and make sure that the new node point at the old head node. 
 The old node in turn already has a reference to the node before it and thus there's nothing else that needs 
-to be done. This operation should take constant time regardless of how big the list already is since we don't 
-need to do any kind of operation on the list apart from the old head node. The code implementation of this can be seen
+to be done. This operation should take constant time ($\mathcal{O}(1)$) regardless of how big the list already is since we don't 
+need to do any kind of operation on the list apart from rereferencing the old head node. The code implementation of this can be seen
 in code overview \ref{code:add}.
 
 A push operation was also implemented so that the last inserted value could be removed. It works on the same principle as
 the add operation and for those interested a link to the full code will be included at the end of this report.
 
+For the append method that should append one linked list to another, two different methods where created. One where we append
+the list to the end of the first list, and one where we instead append it to the front of the first list. In theory appending 
+the list \textbf{a} that varies in size to the end of the fixed size list \textbf{b} should have a time complexity of 
+$\mathcal{O}(1)$. This since list \textbf{b} is fixed and we simply need to step through that list until we reach the node 
+that has a null pointer and rereference it to point to the head of list \textbf{a}.
 
+Appending list \textbf{a} to the beginning of list \textbf{b} however should have a time complexity of $\mathcal{O}(a)$, where $a$ 
+is the size of list \textbf{a}. This is because just as in the other append method we need to first step through list \textbf{a}
+until we reach the null pointer. We then need to make it point to the head of list \textbf{b} and also move the head pointer for list
+\textbf{b} to point to the head of list \textbf{a}. An illustration of this can be seen in figure \ref{fig:append} and the code 
+can be seen in code overview \ref{code:append}.
 
+Lastly we implement the equivalent append method for appending two arrays. I implemented this in accordance to the instructions provided
+in the assignment. This method should have a time complexity of $\mathcal{O}(a+b)=\mathcal{O}(n)$, where $a$ and $b$ is the size of array 
+\textbf{a} and \textbf{b}. This since we need to loop through both arrays and copy each element to a new array big enough to hold 
+all elements from both arrays.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.8\textwidth]{appendDiagram.pdf}
+    \caption{Diagram of how the append first method works}
+    \label{fig:append}
+\end{figure}
 
 \begin{code}
 \captionof{listing}{Class Structure}
@@ -95,7 +115,7 @@ public class LinkedList {
 }
 \end{minted}
 \end{code}
-
+\newpage
 \begin{code}
 \captionof{listing}{Add integer to stack}
 \label{code:add}
@@ -108,11 +128,41 @@ public class LinkedList {
 \end{minted}
 \end{code}
 
+\begin{code}
+\captionof{listing}{Append to front of list}
+\label{code:append}
+\begin{minted}{java}
+public void appendFirst(LinkedList linkedList) {
+    Node current = linkedList.head;
+    while (current.next != null) {
+        current = current.next;
+    }
+    current.next = this.head;
+    this.head = linkedList.head;
+}
+\end{minted}
+\end{code}
 
-
+\FloatBarrier
 \section*{Result}
+Figure \ref{fig:addOperation} shows the minimum time for one add operation out of a thousand add operations done $10,000$ 
+times for each benchmark. On average one add operation took $49.9$ ns.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.8\textwidth]{addOperation.pdf}
+    \caption{Time for one push operation}
+    \label{fig:addOperation}
+\end{figure}
 
+Figure \ref{fig:listAppend}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.8\textwidth]{appendList.pdf}
+    \caption{Time it takes to append growing list \textbf{a} to fixed size list \textbf{b}}
+    \label{fig:listAppend}
+\end{figure}
 
 \section*{Discussion}
 
