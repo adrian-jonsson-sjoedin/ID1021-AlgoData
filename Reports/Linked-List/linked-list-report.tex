@@ -155,7 +155,9 @@ times for each benchmark. On average one add operation took $49.9$ ns.
     \label{fig:addOperation}
 \end{figure}
 
-Figure \ref{fig:listAppend}
+Figure \ref{fig:listAppend} shows the benchmark data for appending a growing list to a fixed list. The list increases in size by 
+10 for each benchmark up to a size of 1000, and the time is the minimum time from doing this append operation $10,000$ times in 
+each benchmark.
 
 \begin{figure}[h]
     \centering
@@ -164,6 +166,19 @@ Figure \ref{fig:listAppend}
     \label{fig:listAppend}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.8\textwidth]{arrayAppend.pdf}
+    \caption{Time it takes to append growing array \textbf{a} to fixed array \textbf{b}}
+    \label{fig:arrayAppend}
+\end{figure}
+
+Figure \ref{fig:arrayAppend} shows the benchmark data for appending a growing array to a fixed size array. The array increases in 
+size by 100 for each benchmark up to a size of $10,000$, and the time is the minimum time from doing this append operation $10,000$ 
+times. 
+
+In both the benchmark for the list and the array, the benchmark are run on a new unmodified list and array. 
+\FloatBarrier
 \section*{Discussion}
 
 
