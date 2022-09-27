@@ -1,0 +1,57 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{placeins}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Code Overview}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=black,      
+    urlcolor=blue,
+    citecolor=black,
+}
+\begin{document}
+
+\title{
+    \textbf{Trees Report.}
+}
+\author{Adrian Jonsson Sjödin}
+\date{Fall 2022}
+
+\maketitle
+
+\section*{Introduction}
+
+\section*{Task}
+
+\section*{Method \& Theory}
+
+\begin{code}
+    \captionof{listing}{Add integer to stack}
+    \label{code:add}
+    \begin{minted}{java}
+ public void add(int value) {
+    Node newHead = new Node(value, this.head);
+    this.head = newHead;
+    this.size++;
+ }
+\end{minted}
+\end{code}
+
+
+\section*{Result}
+
+\section*{Discussion}
+
+All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/LinkedLists/src}{GitHub}
+
+
+
+\end{document}
