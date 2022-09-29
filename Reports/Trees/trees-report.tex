@@ -59,25 +59,83 @@ does not divide further is terminated by a so called leaf.
 A \textit{binary tree} is a tree whose branch always divides into two branches, unless it terminates
 into a leaf.
 
-\begin{code}
-    \captionof{listing}{Add integer to stack}
-    \label{code:add}
-    \begin{minted}{java}
- public void add(int value) {
-    Node newHead = new Node(value, this.head);
-    this.head = newHead;
-    this.size++;
- }
-\end{minted}
-\end{code}
+I won't show the code for how the {\tt BinaryTree} class is constructed here since it
+is already explained in the assignment, I will instead focus on the {\tt add()} and
+    {\tt lookup()} method. When we create a Binary Tree we initialize it empty, i.e. the
+root is set to null. The first node we add to the tree will then become the root, and
+all subsequent nodes will then be added recursively down left or right of the root
+depending on the node's key. If the key-value pair we want to add already exists in the
+tree we instead change the value of that key-value pair to the new value. This ensures
+that all key-value pairs are unique. Code overview \ref{code:add} shows how this work.
+
+The {\tt lookup()} method however is not recursive, instead it uses a while loop to look
+at each node, see if it is the key we want and if not go down left or right in the tree
+depending on the current node's key size. It does this until we find the key we are looking
+for, or we reach a null pointer in which case the key we're looking for doesn't exist in
+the tree. This way of searching should give us a time complexity of $\mathcal{O}(h)$ where
+$h$ is the height of tree. For a balanced tree (the height difference of nodes on
+left and right subtree is not more than one) the height becomes $log(n)$, where $n$ is
+the number of nodes in the tree. That means we should see a time complexity of
+$\mathcal{O}(log(n))$ in our benchmark of the {\tt lookup()} method.
+
+
 
 
 \section*{Result}
-
+The result from the benchmark of the {\tt lookup()} method can be seen in figure \ref{fig:bench}.
+In it we measure how long one long it takes to search for one random key from a tree
+populated by $\sim4,000,000$ million random keys, and double the size of the tree for every measurement.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.8\textwidth]{benchmarkData.pdf}
+    \caption{Benchmark data for the {\tt lookup()} method}
+    \label{fig:bench}
+\end{figure}
 \section*{Discussion}
+As seen in figure \ref{fig:bench} the graph is somewhat linear in a log-log scale, which
+indicates that our statement above about it being of time complexity $\mathcal{O}l(og(n))$.
+The reason why the graph is somewhat skewed and not quite linear is probably because
+in each benchmark a new tree with random branches are created and we're searching for a
+random key. That means it is possible for some measurements to be faster if
+we're lucky and the key we are searching for is closer to the root, than it is in a smaller
+tree which then will take longer to search. With this in mind I feel that the data is
+confirming my statement about the time complexity.
 
-All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/LinkedLists/src}{GitHub}
+\newpage
+\FloatBarrier
+\section*{Code}
+All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/Trees/src}{GitHub}
 
-
+\begin{code}
+    \captionof{listing}{Add to Binary Tree}
+    \label{code:add}
+    \begin{minted}{java}
+public void add(Integer k, Integer v) {
+    if (root == null) {
+        root = new Node(k, v);
+    } else {
+        root.add(k, v);
+    }
+}        
+private void add(Integer k, Integer v) {
+if (this.key == k) {
+    this.value = v;
+}
+if (this.key > k) {
+    if (this.left == null) {
+        this.left = new Node(k, v);
+    } else {
+        this.left.add(k, v);
+    }
+} else {
+    if (this.right == null) {
+        this.right = new Node(k, v);
+    } else {
+        this.right.add(k, v);
+    }
+}
+}
+\end{minted}
+\end{code}
 
 \end{document}
