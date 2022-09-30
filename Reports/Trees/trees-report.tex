@@ -27,12 +27,12 @@
 
 \maketitle
 
-\section*{Introduction}
+\section{Introduction}
 In this assignment we will take a closer look at \textit{tree} structures, and in
 particular at tree structure called \textit{binary trees}. The operations that we will look at and
 implement are: construction, adding and searching for and removing an item.
 
-\section*{Task}
+\section{Task}
 Implement a binary tree structure that is ordered with smaller keys to the left and create the
 following two methods:
 \begin{itemize}
@@ -48,16 +48,17 @@ was done in a previous assignment.
 Also create an iterator that we can use to traverse the tree. The iterator should implements Java's
 Iterator class and override the {\tt hasNext()} and {\tt next()} method. Explain how you implemented
 the methods of the tree iterator class. Also describe what will happen if you create an iterator,
-retrieve a few elements snd then add new elements to the tree. Will it work, what is the state of the
+retrieve a few elements and then add new elements to the tree. Will it work, what is the state of the
 iterator, will we lose values?
 
-\section*{Method \& Theory}
+\section{Method \& Theory}
 This data structure is called a \textit{tree} since the structure originates in a root from where we
 spread out into branches, that then in turn can further divide into their own branches. A branch that
 does not divide further is terminated by a so called leaf.
 
 A \textit{binary tree} is a tree whose branch always divides into two branches, unless it terminates
 into a leaf.
+\subsection{Lookup}
 
 I won't show the code for how the {\tt BinaryTree} class is constructed here since it
 is already explained in the assignment, I will instead focus on the {\tt add()} and
@@ -72,34 +73,67 @@ The {\tt lookup()} method however is not recursive, instead it uses a while loop
 at each node, see if it is the key we want and if not go down left or right in the tree
 depending on the current node's key size. It does this until we find the key we are looking
 for, or we reach a null pointer in which case the key we're looking for doesn't exist in
-the tree. This way of searching should give us a time complexity of $\mathcal{O}(h)$ where
+the tree. The {\tt lookup} method can be seen in code overview \ref{code:lookup}.
+
+This way of searching should give us a time complexity of $\mathcal{O}(h)$ where
 $h$ is the height of tree. For a balanced tree (the height difference of nodes on
 left and right subtree is not more than one) the height becomes $log(n)$, where $n$ is
 the number of nodes in the tree. That means we should see a time complexity of
 $\mathcal{O}(log(n))$ in our benchmark of the {\tt lookup()} method.
 
+\subsection{Iterator}
+To implement the iterator I first had to modify my {\tt Stack} class so that it could
+handle nodes as well. This because the dynamic stack we implemented in a previous assignment
+was only able to handle the {\tt int} primitive data structure. Instead of simply modifying
+it to be able to handle nodes I went with creating a dynamic array stack that could handle
+any generic object so that we can potentially reuse it in coming assignment.
+
+The iterator itself was implement according to the instructions provided. That is I implemented
+the two methods {\tt next()} and {\tt hasNext}, and made {\tt next()} move through the tree
+from the bottommost left node and upwards in increasing key size order. To do this we
+created a private method called {\tt moveLeft(Node current)} that will move down left
+through the tree and push each node to the stack. When we then call the {\tt Iterator}
+we return a new {\tt TreeIterator} whose constructor takes in the current {\tt root} of
+the tree as a parameter and creates a stack. It also calls the private {\tt moveLeft}
+method which will traverse the tree from the root down to the bottommost left node and
+push each node to the stack. When we then call the {\tt next} method for the first time
+we will then start at the bottom with the node containing the smallest key at the top of
+the stack, and with the pointer called current pointing the that node's left which would
+be null.
+
+The {\tt next} method itself works as following: We start with checking if there is a next node
+in the tree whose value we can retrieve. This is done with the {\tt hasNext} method that
+checks whether or not the stack is empty. If it is empty that means we have traversed the
+whole tree and an exception is thrown. Otherwise we pop the stack and set current to
+be the popped node. We then check if that node has any branches down right. If it has we
+call the {\tt moveLeft} method which will push that right branch's left branches to the
+stack. This way the next node popped when we call {\tt next()} again will always be the
+node whose key is the smallest. After that is done we return the value that is stored in the
+popped node.
+
+The code for {\tt next()} and {\tt moveLeft(Node current)} can be seen in code overview
+\ref{code:iterator}.
 
 
-
-\section*{Result}
+\section{Result}
 The result from the benchmark of the {\tt lookup()} method can be seen in figure \ref{fig:bench}.
 In it we measure how long one long it takes to search for one random key from a tree
 populated by $\sim4,000,000$ million random keys, and double the size of the tree for every measurement.
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \includegraphics[width=.8\textwidth]{benchmarkData.pdf}
     \caption{Benchmark data for the {\tt lookup()} method}
     \label{fig:bench}
 \end{figure}
-\section*{Discussion}
+\section{Discussion}
 As seen in figure \ref{fig:bench} the graph is somewhat linear in a log-log scale, which
-indicates that our statement above about it being of time complexity $\mathcal{O}l(og(n))$.
-The reason why the graph is somewhat skewed and not quite linear is probably because
-in each benchmark a new tree with random branches are created and we're searching for a
-random key. That means it is possible for some measurements to be faster if
-we're lucky and the key we are searching for is closer to the root, than it is in a smaller
-tree which then will take longer to search. With this in mind I feel that the data is
-confirming my statement about the time complexity.
+indicates that our statement above about it being of time complexity $\mathcal{O}(log(n))$
+is promising. The reason why the graph is somewhat skewed and not quite linear is
+probably because in each benchmark a new tree with random branches are created and
+we're searching for a random key. That means it is possible for some measurements to be
+faster if we're lucky and the key we are searching for is closer to the root, than it
+is in a smaller tree which then will take longer to search. With this in mind I feel
+that the data is confirming my statement about the time complexity.
 
 \newpage
 \FloatBarrier
@@ -137,5 +171,51 @@ if (this.key > k) {
 }
 \end{minted}
 \end{code}
+\begin{code}
+    \captionof{listing}{Look up key in binary tree}
+    \label{code:lookup}
+    \begin{minted}{java}
+public Integer lookup(Integer key) {
+    return root.lookup(key);
+}
+private Integer lookup(Integer k) {
+    Node current = this;
+    while (current != null) {
+        if (current.key == k) {
+            return current.value;
+        } else if (current.key > k) {
+            current = current.left;
+        } else {
+            current = current.right;
+        }
+    }
+    return null;
+}
+\end{minted}
+\end{code}
 
+\begin{code}
+    \captionof{listing}{{\tt Next()} and {\tt moveLeft(Node current)}}
+    \label{code:iterator}
+    \begin{minted}{java}
+private void moveLeft(Node current) {
+    while (current != null) {
+        stack.push(current);
+        current = current.left;
+    }
+}
+@Override
+public Integer next() {
+    if (!hasNext()) {
+        throw new NoSuchElementException();
+    }
+    Node curr = stack.pop();
+    if (curr.right != null) {
+        moveLeft(curr.right);
+    }
+    next = curr;
+    return curr.value;
+}
+\end{minted}
+\end{code}
 \end{document}
