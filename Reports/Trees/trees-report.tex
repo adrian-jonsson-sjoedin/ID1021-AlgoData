@@ -29,11 +29,11 @@
 
 \section{Introduction}
 In this assignment we will take a closer look at \textit{tree} structures, and in
-particular at tree structure called \textit{binary trees}. The operations that we will look at and
+particular at tree structure called \textit{binary search trees}. The operations that we will look at and
 implement are: construction, adding and searching for and removing an item.
 
 \section{Task}
-Implement a binary tree structure that is ordered with smaller keys to the left and create the
+Implement a binary search tree structure that is ordered with smaller keys to the left and create the
 following two methods:
 \begin{itemize}
     \item {\tt add(Integer key, Integer value)}: adds a new node (leaf) to the
@@ -56,13 +56,13 @@ This data structure is called a \textit{tree} since the structure originates in 
 spread out into branches, that then in turn can further divide into their own branches. A branch that
 does not divide further is terminated by a so called leaf.
 
-A \textit{binary tree} is a tree whose branch always divides into two branches, unless it terminates
+A \textit{binary search tree} is a tree whose branch always divides into two branches, unless it terminates
 into a leaf.
 \subsection{Lookup}
 
 I won't show the code for how the {\tt BinaryTree} class is constructed here since it
 is already explained in the assignment, I will instead focus on the {\tt add()} and
-    {\tt lookup()} method. When we create a Binary Tree we initialize it empty, i.e. the
+    {\tt lookup()} method. When we create a binary search tree we initialize it empty, i.e. the
 root is set to null. The first node we add to the tree will then become the root, and
 all subsequent nodes will then be added recursively down left or right of the root
 depending on the node's key. If the key-value pair we want to add already exists in the
@@ -125,6 +125,7 @@ populated by $\sim4,000,000$ million random keys, and double the size of the tre
     \caption{Benchmark data for the {\tt lookup()} method}
     \label{fig:bench}
 \end{figure}
+\newpage
 \section{Discussion}
 As seen in figure \ref{fig:bench} the graph is somewhat linear in a log-log scale, which
 indicates that our statement above about it being of time complexity $\mathcal{O}(log(n))$
@@ -135,13 +136,28 @@ faster if we're lucky and the key we are searching for is closer to the root, th
 is in a smaller tree which then will take longer to search. With this in mind I feel
 that the data is confirming my statement about the time complexity.
 
+This also means that looking up a key in a binary search tree is on the same order of magnitude
+that it takes to search for an element in a sorted array with binary search. This however 
+doesn't come as a surprise since a binary search tree is created off of the same principle as 
+the binary search algorithm, allowing us to skip about half the tree on average for each comparison.
+
+The iterator works as intended and if you start retrieving a few values with it before adding more nodes
+to the tree the {\tt next} method will retrieve them as well, as long as the iterator hasn't already passed 
+the position where that node will be created. If it has then the {\tt next} method will of course not retrieve
+them since they are behind where the pointer in {\tt next} is pointing. However they will be retrieved if we use
+an enhanced for each loop after it since it creates a new separate local instance of an iterator that will start at the 
+bottom of the tree and traverse it depth first.
+
+So in conclusion adding new nodes to the tree after already staring to retrieve elements will not affect the iterator 
+negatively and neither will we lose values. 
+
 \newpage
 \FloatBarrier
 \section*{Code}
 All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/Trees/src}{GitHub}
 
 \begin{code}
-    \captionof{listing}{Add to Binary Tree}
+    \captionof{listing}{Add to binary search tree}
     \label{code:add}
     \begin{minted}{java}
 public void add(Integer k, Integer v) {
@@ -172,7 +188,7 @@ if (this.key > k) {
 \end{minted}
 \end{code}
 \begin{code}
-    \captionof{listing}{Look up key in binary tree}
+    \captionof{listing}{Look up key in binary search tree}
     \label{code:lookup}
     \begin{minted}{java}
 public Integer lookup(Integer key) {

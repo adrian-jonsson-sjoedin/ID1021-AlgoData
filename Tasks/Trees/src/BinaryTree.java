@@ -139,10 +139,26 @@ public class BinaryTree implements Iterable<Integer> {
         tree.add(6, 106);
         tree.add(3, 103);
 
+        Iterator<Integer> itr = tree.iterator();
         // tree.print();
 
+        // for (int i : tree)
+        // System.out.println("Next value " + i);
+        System.out.println(itr.next());
+        System.out.println(itr.next());
+        System.out.println(itr.next());
+        System.out.println(itr.next());
+        System.out.println("add key 4 to tree. shouldn't show up before the for each loop");
+        tree.add(4, 104);
+        System.out.println("add key 9 to tree. might show up before the for each loop");
+        tree.add(9, 109);
+        System.out.println(itr.next());
+        System.out.println(itr.next());
         for (int i : tree)
             System.out.println("Next value " + i);
+        System.out.println(itr.next());
+        System.out.println(itr.next());
+            
     }
 
     @Override
