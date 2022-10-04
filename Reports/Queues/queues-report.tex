@@ -1,0 +1,88 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{placeins}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Code Overview}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=black,      
+    urlcolor=blue,
+    citecolor=black,
+}
+\begin{document}
+
+\title{
+    \textbf{Ques Report.}
+}
+\author{Adrian Jonsson Sjödin}
+\date{Fall 2022}
+
+\maketitle
+
+\section{Introduction}
+
+
+\section{Task}
+Implement two different FIFO queues. One utilizing arrays and one utilizing a linked list structure.
+
+For the linked list queue, first implement a linked list queue structure that only has one property,
+the \textit{head}, and new elements are simply added to the end of this list. What are the drawbacks
+to this implementation? What are the cost of removing the next element and adding a new element?
+
+Change the linked list queue so that it holds a pointer to to the first element of the queue
+(the \textit{head}), but also a pointer to the last element of the queue. This should allow one
+to add a new node at the end directly without first having to traverse the list to find the last
+node.
+
+Now use the linked list queue to create a new iterator for the binary tree from last weeks assignment
+that traverses the tree breath first.
+
+The array implementation of the queue  should be dynamic and be able to increase in size, but also
+optionally shrink in size.
+\section{Method \& Theory}
+
+
+
+\section{Result}
+
+
+\section{Discussion}
+
+
+\newpage
+\FloatBarrier
+\section*{Code}
+All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/Trees/src}{GitHub}
+
+\begin{code}
+    \captionof{listing}{Add to Binary Tree}
+    \label{code:add}
+    \begin{minted}{java}
+
+\end{minted}
+\end{code}
+
+\begin{code}
+    \captionof{listing}{Look up key in binary tree}
+    \label{code:lookup}
+    \begin{minted}{java}
+
+\end{minted}
+\end{code}
+
+\begin{code}
+    \captionof{listing}{{\tt Next()} and {\tt moveLeft(Node current)}}
+    \label{code:iterator}
+    \begin{minted}{java}
+
+\end{minted}
+\end{code}
+\end{document}
