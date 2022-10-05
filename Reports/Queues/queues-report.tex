@@ -127,8 +127,9 @@ initially set to null. We can then add elements to the que by placing them in th
 element and the last element is located in the array we also need two pointers, {\tt first} and {\tt last}. These are
 simply storing the index of the array where the first and last element in the queue is stored.
 
-When adding an element to the queue there is a lot of things to consider. Here I am going to go through them one after
-the other in the order that I implemented them in the {\tt enqueue} method.
+When adding or removing an element to the queue, or resizing the array there is a lot of things to consider.
+Here I am going to go through them one after
+the other in the order that I implemented them, starting with the {\tt enqueue} method.
 
 \subsubsection{{\tt enqueue(Item item)}}
 First we need to check if the array is empty. This is done by having a private field {\tt itemsInQueue} which tracks
@@ -158,9 +159,48 @@ After this we check if {\tt itemsInQueue <= size / 4}. If this gives {\tt true} 
 in the array and we want to shrink it. To do this we call {\tt resize()} which will shrink the array. Now lastly we
 return the retrieved item.
 
+The code for the {\tt dequeue} method can be seen in code overview \ref{code:arrayDequeue}.
+
 \subsection{{\tt resize()}}
 The {\tt resize} method is what makes this queue dynamic. It will expand it if it is full and shrink it if there's
-a lot of empty space
+a lot of empty space. It will also place the elements in order with {\tt first} on index zero the rest placed after it
+in order.
+
+Before we do anything else we need to initialize some variables. We need two {\tt int}'s, one for the new size of the
+array and one for iterating through the new array. We also need a temporary array for storing the elements from the
+queue array. After this is done we can check if we should expand or shrink the queue array. This is done using {\tt if}
+    {\tt else} where if the array is full we expand it, else we shrink it.
+
+If it is full we set the new size to be double that of the old size and use that size when allocating the temporary
+array. After that we need to set the iterator counter {\tt j} to zero and loop through the queue array from index
+    {\tt first} to the end of the array and save it to the temporary array at index {\tt j}, not forgetting to increment
+    {\tt j} with one in each loop. After this loop we need to loop through the queue array once more but this time from
+the start of the array to where index {\tt first - 1} is at, and save each value to the temporary array at index {\tt j},
+and make sure to increment {\tt j} with one once more. We will now have a copy of the queue array stored in the temporary
+array with {\tt first} stored at index zero, {\tt last} stored at index ({\tt size -1}), {\tt j} having the value of
+    {\tt size} and index at value {\tt size} to ({\tt newSize -1}) set to null.
+
+Now we just need to let {\tt queue} point
+at the temporary array, set {\tt size = newSize}, set {\tt first} to zero, {\tt last} to {\tt j} and
+    {\tt temporaryQueue = null}. This is done outside the {\tt if} and {\tt else} statement, at the end of the {\tt resize}
+method. When we now call the {\tt resize} method in {\tt enqueue(Item item)}, {\tt last} will point at the next empty
+space in the queue array that will now have doubled in size.
+
+If the queue array is not full and the {\tt resize} method is called then the first if statement will give {\tt false}
+and we want to shrink the array. We set {\tt newSize} to be half of {\tt size} and allocate a temporary array of that size.
+We also need to set the index counter {\tt j} to zero. Then we can start looping through the queue array from {\tt first}
+to the end of the array and saving it to the temporary array at index {\tt j}.  However we add an if statement in the loop
+before the copying step that checks wether or not the element at the current index in the queue array is null. If it is
+we break the for loop since we have then copied all the elements from the queue array. It is after this check that we
+do the copying to the temporary array as well as incrementing {\tt j}.
+
+We now have the second loop and this one only runs if {\tt last < first}. This means the the queue we want to shrink
+have elements that have wrapped around and that {\tt last} comes before {\tt first} in the array. If this is {\tt true}
+we loop through the queue array from index zero to index {\tt last -1 } and save each element in the temporary array at
+index {\tt j}, not forgetting to increment {\tt j} in each loop. After this is done the same step as described above will
+be executed.
+
+The code for {\tt resize()} can be seen in code overview \ref{code:resize}.
 
 \section{Discussion}
 
@@ -168,7 +208,7 @@ a lot of empty space
 \newpage
 \FloatBarrier
 \section*{Code}
-All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/Trees/src}{GitHub}
+All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/Queues/src}{GitHub}
 
 \begin{code}
     \captionof{listing}{Add and remove in first linked list queue}
@@ -293,8 +333,8 @@ public Item dequeue() {
 \end{code}
 
 \begin{code}
-    \captionof{listing}{Array implementation of {\tt dequeue()}}
-    \label{code:arrayDequeue}
+    \captionof{listing}{The {\tt resize} method}
+    \label{code:resize}
     \begin{minted}{java}
 public void resize() {
     int newSize;
