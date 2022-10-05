@@ -31,7 +31,6 @@ public class ArrayQueue<Item> {
             }
             if (isFull()) {
                 resize();
-
             }
             if (this.last == 0) {
                 this.queue[this.last] = item;
@@ -54,12 +53,9 @@ public class ArrayQueue<Item> {
         this.queue[this.first] = null;
         this.first++;
         this.itemsInQueue--;
-
-        // check if first has passed last. if it has it means all items are dequeued
-        // we can then start filling it up from the start again.
-
-        // if (this.first > this.last && this.queue[0] == null)
-        // this.first = this.last = 0;
+        if (this.itemsInQueue <= (this.size / 4)) {
+            resize();
+        }
         return returnedItem;
     }
 
@@ -71,16 +67,38 @@ public class ArrayQueue<Item> {
     }
 
     public void resize() {
-        int newSize = this.size * 2;
-        Item[] newQueue = (Item[]) new Object[newSize];
-        int j = 0;
-        for (int i = this.first; i < this.size; i++) {
-            newQueue[j] = this.queue[i];
-            j++;
-        }
-        for (int i = 0; i < this.first; i++) {
-            newQueue[j] = this.queue[i];
-            j++;
+        int newSize;
+        int j;
+        Item[] newQueue;
+        if (isFull()) {
+            newSize = this.size * 2;
+            newQueue = (Item[]) new Object[newSize];
+            j = 0;
+            for (int i = this.first; i < this.size; i++) {
+                newQueue[j] = this.queue[i];
+                j++;
+            }
+            for (int i = 0; i < this.first; i++) {
+                newQueue[j] = this.queue[i];
+                j++;
+            }
+        } else {
+            newSize = this.size / 2;
+            newQueue = (Item[]) new Object[newSize];
+            j = 0;
+            for (int i = this.first; i < this.size; i++) {
+                if (this.queue[i] == null)
+                    break;
+                newQueue[j] = this.queue[i];
+                j++;
+            }
+            if (this.last < this.first) {
+                for (int i = 0; i < this.last; i++) {
+                    newQueue[j] = this.queue[i];
+                    j++;
+                }
+            }
+
         }
         this.queue = newQueue;
         this.size = newSize;
@@ -91,6 +109,9 @@ public class ArrayQueue<Item> {
 
     public static void main(String[] args) {
         ArrayQueue queue = new ArrayQueue<Integer>(4);
+        /*
+         * test increasing size of queue
+         */
         queue.enqueue(0);
         queue.enqueue(1);
         queue.enqueue(2);
@@ -101,6 +122,10 @@ public class ArrayQueue<Item> {
         queue.enqueue(6);
         queue.enqueue(7);
         queue.print();
+
+        /*
+         * test wrap around add to queue.
+         */
         System.out.println("retrieved item: " + queue.dequeue());
         System.out.println("retrieved item: " + queue.dequeue());
         System.out.println("retrieved item: " + queue.dequeue());
@@ -108,6 +133,7 @@ public class ArrayQueue<Item> {
         queue.enqueue(9);
         queue.enqueue(10);
         queue.print();
+
         queue.enqueue(11);
         queue.enqueue(12);
         queue.enqueue(13);
@@ -123,7 +149,47 @@ public class ArrayQueue<Item> {
         queue.enqueue(19);
         queue.enqueue(20);
 
-        queue.print();
+        /*
+         * test dequeue resize wrap around. last < first
+         */
+        // queue.enqueue(0);
+        // queue.enqueue(1);
+        // queue.enqueue(2);
+        // queue.enqueue(3);
+        // queue.enqueue(4);
+        // queue.enqueue(5);
+        // queue.enqueue(6);
+        // queue.enqueue(8);
+        // queue.enqueue(9);
+        // queue.enqueue(10);
+        // queue.enqueue(11);
+        // queue.enqueue(12);
+        // queue.enqueue(13);
+        // queue.enqueue(14);
+        // queue.enqueue(15);
+        // queue.enqueue(16);
+        // queue.print();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.enqueue(17);
+        // queue.enqueue(18);
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.dequeue();
+        // queue.print();
+
+        /*
+         * test dequeue resize for last > first
+         */
         // queue.enqueue(0);
         // queue.enqueue(1);
         // queue.enqueue(2);
@@ -132,9 +198,8 @@ public class ArrayQueue<Item> {
         // queue.print();
         // System.out.println("retrieved item: " + queue.dequeue());
         // System.out.println("retrieved item: " + queue.dequeue());
-        // System.out.println("retrieved item: " + queue.dequeue());
-        // System.out.println("retrieved item: " + queue.dequeue());
         // queue.print();
         // System.out.println("retrieved item: " + queue.dequeue());
+        // queue.print();
     }
 }
