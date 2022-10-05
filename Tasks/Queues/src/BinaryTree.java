@@ -122,7 +122,6 @@ public class BinaryTree implements Iterable<Integer> {
     }
 
     public class TreeIterator implements Iterator<Integer> {
-        private Node next;
         private Queue<Node> queue;
 
         public TreeIterator(Node root) {
