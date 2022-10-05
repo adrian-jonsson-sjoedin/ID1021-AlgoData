@@ -119,9 +119,48 @@ traversal.
 
 The code for {\tt next} can be seen in code overview \ref{code:iterator}.
 \subsection{Dynamic Queue Using Arrays}
+Lastly we were supposed to implement a queue using arrays. This was by far the trickiest thing to implement since
+we needed to keep track of where in the array we where storing the elements.
 
-\section{Result}
+The idea is that we create an empty array of a fixed size that can hold generic objects, and where each element is
+initially set to null. We can then add elements to the que by placing them in the array. To keep track of where the first
+element and the last element is located in the array we also need two pointers, {\tt first} and {\tt last}. These are
+simply storing the index of the array where the first and last element in the queue is stored.
 
+When adding an element to the queue there is a lot of things to consider. Here I am going to go through them one after
+the other in the order that I implemented them in the {\tt enqueue} method.
+
+\subsubsection{{\tt enqueue(Item item)}}
+First we need to check if the array is empty. This is done by having a private field {\tt itemsInQueue} which tracks
+how many elements we have added to the queue. If the queue is empty we store the element at the index value given
+by {\tt first} ({\tt first} and {\tt last} are set to 0 when queue is first created), and then increment {\tt last}
+and {\tt itemsInQueue} by one. This will make it so that {\tt last} points to the next empty spot in the array.
+
+If it is not empty then we do one or two things out of four things. First we check if {\tt last -1 == size -1}
+(meaning is the last index in the array taken) and check if the array is not full. If this gives {\tt true} then it
+means that we have dequeued elements at the front of the array and that there's free space we can use. We then set
+    {\tt last = 0} which will allow us to reuse that space. After this check we also check if the array is full and
+if it is we resize it. This will not happen in this case since we said the earlier check gave {\tt true}. After
+this check we have yet another check and this one checks wether or not {\tt last == 0}. This is to see if we should
+add the new element to the start of the array and reuse space or not. If it gives false we simply add it at the
+index value of {\tt last} and then increment it and {\tt itemsInQueue} with one.  If it gives {\tt true}, which it will
+in this case we do the same thing but the index value of {\tt last} will now be $0$.
+
+As mentioned this was quite tricky and also hard to describe in text. To get a better overview of how this works I've
+included the code for this method in code overview \ref{code:arrayAdd}.
+
+\subsubsection{{\tt dequeue()}}
+The {\tt dequeue} method in comparison is quite simple. Here we first check if the queue is empty and if it is we inform
+the user and return null. If it is not we do basically the same operation as in {\tt dequeue} for the linked list. We
+start with retrieving the first item from the array by retrieving the element at the index value of {\tt first} in
+the array. We then set that spot to null and increment {\tt first} by one and decrement {\tt itemsInQueue} by one.
+After this we check if {\tt itemsInQueue <= size / 4}. If this gives {\tt true} that means we have a lot of empty space
+in the array and we want to shrink it. To do this we call {\tt resize()} which will shrink the array. Now lastly we
+return the retrieved item.
+
+\subsection{{\tt resize()}}
+The {\tt resize} method is what makes this queue dynamic. It will expand it if it is full and shrink it if there's
+a lot of empty space
 
 \section{Discussion}
 
@@ -201,10 +240,101 @@ public Integer next() {
 \end{code}
 
 \begin{code}
-    \captionof{listing}{{\tt Next()} and {\tt moveLeft(Node current)}}
-    \label{code:iterator}
+    \captionof{listing}{Array implementation of {\tt enqueue(Item item)}}
+    \label{code:arrayAdd}
     \begin{minted}{java}
+public void enqueue(Item item) {
+    if (isEmpty()) {
+        this.queue[this.first] = item;
+        this.itemsInQueue++;
+        this.last++;
+        return;
+    }
+    if (!isEmpty()) {
+        if ((this.last - 1) == (this.size - 1) && !isFull()) {
+            this.last = 0;
+        }
+        if (isFull()) {
+            resize();
+        }
+        if (this.last == 0) {
+            this.queue[this.last] = item;
+            this.last++;
+            this.itemsInQueue++;
+        } else {
+            this.queue[this.last] = item;
+            this.last++;
+            this.itemsInQueue++;
+        }
+    }
+}
+\end{minted}
+\end{code}
 
+\begin{code}
+    \captionof{listing}{Array implementation of {\tt dequeue()}}
+    \label{code:arrarDequeue}
+    \begin{minted}{java}
+public Item dequeue() {
+    if (isEmpty()) {
+        System.out.println("dequeue(): queue is empty");
+        return null;
+    }
+    Item returnedItem = this.queue[this.first];
+    this.queue[this.first] = null;
+    this.first++;
+    this.itemsInQueue--;
+    if (this.itemsInQueue <= (this.size / 4)) {
+        resize();
+    }
+    return returnedItem;
+}
+\end{minted}
+\end{code}
+
+\begin{code}
+    \captionof{listing}{Array implementation of {\tt dequeue()}}
+    \label{code:arrayDequeue}
+    \begin{minted}{java}
+public void resize() {
+    int newSize;
+    int j;
+    Item[] newQueue;
+    if (isFull()) {
+        newSize = this.size * 2;
+        newQueue = (Item[]) new Object[newSize];
+        j = 0;
+        for (int i = this.first; i < this.size; i++) {
+            newQueue[j] = this.queue[i];
+            j++;
+        }
+        for (int i = 0; i < this.first; i++) {
+            newQueue[j] = this.queue[i];
+            j++;
+        }
+    } else {
+        newSize = this.size / 2;
+        newQueue = (Item[]) new Object[newSize];
+        j = 0;
+        for (int i = this.first; i < this.size; i++) {
+            if (this.queue[i] == null)
+                break;
+            newQueue[j] = this.queue[i];
+            j++;
+        }
+        if (this.last < this.first) {
+            for (int i = 0; i < this.last; i++) {
+                newQueue[j] = this.queue[i];
+                j++;
+            }
+        }
+    }
+    this.queue = newQueue;
+    this.size = newSize;
+    this.first = 0;
+    this.last = j;
+    newQueue = null;
+}
 \end{minted}
 \end{code}
 \end{document}
