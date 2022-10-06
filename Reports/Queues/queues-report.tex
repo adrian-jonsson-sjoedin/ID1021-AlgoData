@@ -28,9 +28,12 @@
 \maketitle
 
 \section{Introduction}
-
+\label{intro}
+In this assignment we will look at how queues function. How to implement them and how they
+can be used in other programs
 
 \section{Task}
+\label{task}
 Implement two different FIFO queues. One utilizing arrays and one utilizing a linked list structure.
 
 For the linked list queue, first implement a linked list queue structure that only has one property,
@@ -48,10 +51,12 @@ that traverses the tree breath first.
 The array implementation of the queue  should be dynamic and be able to increase in size, but also
 optionally shrink in size.
 \section{Method \& Theory}
+\label{method}
 A queue is a data structure that is built on the FIFO principle of \textit{first} element \textit{in} is \textit{first}
 element \textit{out}. This structure is useful in real world application such as printers where we want to print a document but
 at the same time send more documents to it to be printed after, in the order we sent them.
 \subsection{Linked List Queue Without Second Pointer}
+\label{met-linkedQueueNoLast}
 
 The first queue to be implemented was the linked list queue that did not have a pointer to the last element in the queue. The task
 said to have a pointer to the head and add all new elements to the end of the list. I however went with the opposite and made the \textit{head}
@@ -77,6 +82,7 @@ simply make the pointer for the previous element point to null instead and then 
 The code for {\tt add()} and {\tt remove()} can be seen in code overview \ref{code:queueNoLast}.
 
 \subsection{Linked List Queue With Pointer To First \& Last Element}
+\label{met-linkedQueue}
 The second linked list queue is an improvement over the the first one in that it has two pointers. One to the first element in the queue and one to the last.
 This should allow us to make enqueue and dequeue operations at at constant time since we can directly add the new node to the end of the list without first having
 to go through the whole list and find the last element, and we can also immediately retrieve the first element of the list.
@@ -103,6 +109,7 @@ before returning the first element's item.
 The code for {\tt enqueue()} and {\tt dequeue()} can be seen in code overview \ref{code:queue}.
 
 \subsection{Breath First Traversal of Binary Tree}
+\label{met-breath}
 Implementing a iterator for the binary tree created in last week's assignment required just some slight modifications to the stack iterator we created.
 First instead of creating a stack in the {\tt TreeIterator} we create our queue that can accept nodes. In the constructor we then initialize the queue and
 add the {\tt root} of the binary tree to the queue using {\tt enqueue()}.
@@ -119,6 +126,7 @@ traversal.
 
 The code for {\tt next} can be seen in code overview \ref{code:iterator}.
 \subsection{Dynamic Queue Using Arrays}
+\label{met-arrayQueue}
 Lastly we were supposed to implement a queue using arrays. This was by far the trickiest thing to implement since
 we needed to keep track of where in the array we where storing the elements.
 
@@ -132,6 +140,7 @@ Here I am going to go through them one after
 the other in the order that I implemented them, starting with the {\tt enqueue} method.
 
 \subsubsection{{\tt enqueue(Item item)}}
+\label{metmet-enqueue}
 First we need to check if the array is empty. This is done by having a private field {\tt itemsInQueue} which tracks
 how many elements we have added to the queue. If the queue is empty we store the element at the index value given
 by {\tt first} ({\tt first} and {\tt last} are set to 0 when queue is first created), and then increment {\tt last}
@@ -151,6 +160,7 @@ As mentioned this was quite tricky and also hard to describe in text. To get a b
 included the code for this method in code overview \ref{code:arrayAdd}.
 
 \subsubsection{{\tt dequeue()}}
+\label{metmet-dequeue}
 The {\tt dequeue} method in comparison is quite simple. Here we first check if the queue is empty and if it is we inform
 the user and return null. If it is not we do basically the same operation as in {\tt dequeue} for the linked list. We
 start with retrieving the first item from the array by retrieving the element at the index value of {\tt first} in
@@ -162,6 +172,7 @@ return the retrieved item.
 The code for the {\tt dequeue} method can be seen in code overview \ref{code:arrayDequeue}.
 
 \subsection{{\tt resize()}}
+\label{metmet-resize}
 The {\tt resize} method is what makes this queue dynamic. It will expand it if it is full and shrink it if there's
 a lot of empty space. It will also place the elements in order with {\tt first} on index zero the rest placed after it
 in order.
@@ -203,6 +214,47 @@ be executed.
 The code for {\tt resize()} can be seen in code overview \ref{code:resize}.
 
 \section{Discussion}
+As mentioned in subsection \ref{met-linkedQueueNoLast} the time complexity for adding objects to the queue is $\mathcal{O}(n)$,
+there $n$ is the number of objects in the queue, and the time complexity to retrieve objects from the queue is $\mathcal{O}(1)$.
+So while it is an easy queue to implement the cost of adding elements are a serious drawback when $n$ becomes really large.
+This is why the second implementation of a linked list queue discussed in subsection \ref{met-linkedQueue} is to prefer.
+In it the both the cost of adding and retrieving objects are of time complexity $\mathcal{O}(1)$. This is due to the fact
+that the queue is using two pointer here, one to the first object in the queue (that object has a pointer to the next
+object in the queue) and one to the last object in the queue (that object has a null pointer). This way retrieving the
+first object is simply retrieving what the first pointer is pointing at and then set first to what that object was pointing
+at. This is a constant time operation. The same goes for adding new objects to the queue. Then we only need to look at what
+the last pointer is pointing at and set that objects null pointer to point at the new object and then re-point the last
+pointer to point to that object. This as well is a constant time operation.
+
+Implementing an iterator that traverses the binary tree breath first was quite easy using a queue data structure. The queue
+made it possible to just simply look at the current node in the tree and then push the node to the left and the node to
+the right of the current node to the stack. When we then pop the queue the left node will be the first to be popped and then its
+left and right node will be added to the queue, then will the previous added right node be popped and its left and right
+node will be added to the queue. Now the next time the queue is popped that previous popped left's node will be the one
+retrieved and the process will be repeated. This way starting from the {\tt root} we will be able to traverse the tree from top down,
+left to right.
+
+About the dynamic stack array. This was by far the hardest to implement and I had to make heavy use of the debugging tool
+to make it work. The reason why this was so hard was because of the need to keep track of where {\tt first} and {\tt last}
+was located in the array and when we could wrap around in the array as opposed to just make the array bigger. Then we also
+had to take into account how to expand and shrink the array when we had wrapped around objects in the array.
+
+The time complexity for adding objects to this array queue is $\mathcal{O}(1)$ until we reach the point where the array
+is full, then we need to expand the array which will means that the time complexity to add an object then is $\mathcal{O}(n)$,
+where $n$ is the size of the queue before it is expanded. This however will only happens ones every $n-1$ add operation
+(assuming we have no dequeue operations in there) so the amortized time complexity of adding objects to the queue is
+${\mathcal{O}(1)}$. The same goes for retrieving objects from the queue. To retrieve one object has a time complexity
+of $\mathcal{O}(1)$, but if the object we want to retrieve makes it so that there is only $k/4$, there $k$ is the number
+of objects in the queue, objects left in the queue we will have a time complexity of $\mathcal{O}(k)$ to retrieve said
+object. This is because we then want to shrink the array and then need to copy all the objects. However this as well
+will not trigger every time we want to retrieve an object so the amortize cost will be $\mathcal{O}(1)$.
+
+While there is a bit more overhead involved when adding objects to an array queue, I still believe this will be faster
+than adding an object in the linked list queue. This because there we need to make a new node and then link it, and memory allocations does
+generally takes more time than just writing something in an already allocated array where everything is next to each other
+in the memory. The same goes for retrieving objects from the queue. However the fact that we sometimes need to expand and
+shrink the array might make up for this and actually make the linked list queue faster on average. But until this happens
+the array queue is probably faster.
 
 
 \newpage
@@ -313,7 +365,7 @@ public void enqueue(Item item) {
 
 \begin{code}
     \captionof{listing}{Array implementation of {\tt dequeue()}}
-    \label{code:arrarDequeue}
+    \label{code:arrayDequeue}
     \begin{minted}{java}
 public Item dequeue() {
     if (isEmpty()) {
