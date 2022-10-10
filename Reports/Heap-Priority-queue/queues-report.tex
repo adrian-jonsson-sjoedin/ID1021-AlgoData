@@ -1,0 +1,117 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{placeins}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Code Overview}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=black,      
+    urlcolor=blue,
+    citecolor=black,
+}
+\begin{document}
+
+\title{
+    \textbf{A Heap or Priority Queue Report.}
+}
+\author{Adrian Jonsson Sjödin}
+\date{Fall 2022}
+
+\maketitle
+
+\section{Introduction}
+\label{intro}
+
+
+\section{Task}
+\label{task}
+The task in this assignment is to create a priority queue using different implementations and determine
+the pros and cons of each. The different priority queues to be implemented are listed bellow.
+\begin{itemize}
+    \item List implementation of priority queue where smaller numbers have higher priority. Make one implementation
+    where the cost of adding elements are $\mathcal{O}(1)$ and remove is $\mathcal{O}(n)$, and another where the costs are reversed.
+    Benchmark the two implementations and discuss situations where one would be preferred over the other.
+    
+    \item Priority queue implementing a heap as a linked binary tree where each node holds the element, branches and 
+    the total number of elements in the subtree. This to make the tree balanced. You should be able to add and remove elements.
+    Also implement a method {\tt push(Integer incr)} that increments the root element by {\tt incr} and then pushes it (by swapping 
+    values) to either the left or right branch.
+
+    Set up a benchmark where you first add 64 elements with random values to a heap. The run a sequence of push operations 
+    where you increment a by a random number ($\in[10,20]$). Collect some statistics on how deep the push operations need to go.
+    
+    Change the add method so that it also returns the depth. Run the same benchmark as above but now collect statistics on the 
+    add method.
+
+    \item Priority queue implementing a heap using an array. Benchmark the array implementation and see how it compares to the 
+    \item linked list implementation.
+
+\end{itemize}
+
+\section{Method \& Theory}
+\label{method}
+
+\section{Discussion}
+
+
+\newpage
+\FloatBarrier
+\section*{Code}
+All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/Queues/src}{GitHub}
+
+\begin{code}
+    \captionof{listing}{Add and remove in first linked list queue}
+    \label{code:queueNoLast}
+    \begin{minted}{java}
+
+\end{minted}
+\end{code}
+
+\begin{code}
+    \captionof{listing}{Enqueue and dequeue in second linked list queue}
+    \label{code:queue}
+    \begin{minted}{java}
+
+    \end{minted}
+\end{code}
+
+\begin{code}
+    \captionof{listing}{The {\tt next()} method for the iterator}
+    \label{code:iterator}
+    \begin{minted}{java}
+
+    \end{minted}
+\end{code}
+
+\begin{code}
+    \captionof{listing}{Array implementation of {\tt enqueue(Item item)}}
+    \label{code:arrayAdd}
+    \begin{minted}{java}
+
+    \end{minted}
+\end{code}
+
+\begin{code}
+    \captionof{listing}{Array implementation of {\tt dequeue()}}
+    \label{code:arrayDequeue}
+    \begin{minted}{java}
+
+    \end{minted}
+\end{code}
+
+\begin{code}
+    \captionof{listing}{The {\tt resize} method}
+    \label{code:resize}
+    \begin{minted}{java}
+
+    \end{minted}
+\end{code}
+\end{document}
