@@ -34,6 +34,7 @@ public class ListQueue {
         return this.first == null;
     }
 
+    // constant time to add
     public void add(Integer item) {
         Node newNode = new Node(item, null);
         if (this.first == null)
@@ -43,10 +44,16 @@ public class ListQueue {
         this.last = newNode;
     }
 
+    // removes the integer with lowest value. time complexity O(n)
     public Integer remove() {
         if (this.first == null) {
             System.out.println("remove(): queue is empty");
             return null;
+        }
+        if (this.first.next == null) {
+            int min = this.first.item;
+            this.first = null;
+            return min;
         }
         Node current = this.first;
         int min = Integer.MAX_VALUE;
@@ -70,6 +77,17 @@ public class ListQueue {
         queue.add(2);
         queue.add(3);
         queue.add(4);
+        queue.print();
+        System.out.println("removed: " + queue.remove());
+        queue.print();
+        System.out.println("removed: " + queue.remove());
+        queue.print();
+        System.out.println("removed: " + queue.remove());
+        queue.print();
+        System.out.println("removed: " + queue.remove());
+        queue.print();
+        queue.add(7);
+        queue.add(0);
         queue.print();
         System.out.println("removed: " + queue.remove());
         queue.print();
