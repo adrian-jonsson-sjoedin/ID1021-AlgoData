@@ -1,14 +1,14 @@
-public class Heap<P extends Comparable, T> {
+public class Heap<T> {
     Node root;
 
     private class Node {
-        private P priority;
+        private int priority;
         private T item;
         private int size;
         private Node left;
         private Node right;
 
-        public Node(P priority, T value, int size) {
+        public Node(int priority, T value, int size) {
             this.priority = priority;
             this.item = value;
             this.size = size;
@@ -24,11 +24,11 @@ public class Heap<P extends Comparable, T> {
                 right.print();
         }
 
-        private void add(P prio, T item) {
+        private void add(int prio, T item) {
             // we want to move the item and prio of the current node down if the item we
             // want to add has lower priority than the node we're in
-            if (prio.compareTo(this.priority) < 0) {
-                P tempPriority = this.priority;
+            if (prio < this.priority) {
+                int tempPriority = this.priority;
                 T tempItem = this.item;
                 this.priority = prio;
                 this.item = item;
@@ -65,7 +65,7 @@ public class Heap<P extends Comparable, T> {
                 this.size--;
                 return this;
             }
-            if (this.left.priority.compareTo(this.right.priority) < 0) {
+            if (this.left.priority < this.right.priority) {
                 this.priority = this.left.priority;
                 this.item = this.left.item;
                 this.size--;
@@ -123,12 +123,76 @@ public class Heap<P extends Comparable, T> {
         }
     }
 
-    public void add(P priority, T item) {
+    public void add(int priority, T item) {
         if (root == null) {
             root = new Node(priority, item, 1);
         } else {
             root.add(priority, item);
         }
+    }
+
+    public void swapMinNodeUp(Node swapDown, Node swapUp) {
+        int tempPriority = swapDown.priority;
+        T tempItem = swapDown.item;
+        swapDown.priority = swapUp.priority;
+        swapDown.item = swapUp.item;
+        swapUp.priority = tempPriority;
+        swapUp.item = tempItem;
+    }
+
+    public int push(int increment) {
+        this.root.priority += increment;
+        Node current = this.root;
+        return push(this.root.priority, current, 0);
+
+    }
+
+    private int push(int newRootValue, Node current, int depth) {
+        if (current.left == null) {
+            if (newRootValue < current.right.priority) {
+                return depth;
+            } else if (current.left.priority < newRootValue) {
+                depth++;
+                swapMinNodeUp(current, current.right);
+
+            }
+            if (current.right.size != 1) {
+                depth = push(newRootValue, current.right, depth);
+            }
+        }
+        if (current.right == null) {
+            if (current.left.priority > newRootValue) {
+                return depth;
+            } else if (current.left.priority < newRootValue) {
+                depth++;
+                swapMinNodeUp(current, current.left);
+            }
+            if (current.left.priority != 1) {
+                depth = push(newRootValue, current.left, depth);
+            }
+        }
+        if (current.left.priority > current.right.priority) {
+            if (current.right.priority > newRootValue) {
+                return depth;
+            } else if (current.right.priority < newRootValue) {
+                depth++;
+                swapMinNodeUp(current, current.right);
+            }
+            if (current.right.size != 1) {
+                depth = push(newRootValue, current.right, depth);
+            }
+        } else {
+            if (current.left.priority > newRootValue) {
+                return depth;
+            } else if (current.left.priority < newRootValue) {
+                depth++;
+                swapMinNodeUp(current, current.left);
+            }
+            if (current.left.size != 1) {
+                depth = push(newRootValue, current.left, depth);
+            }
+        }
+        return depth;
     }
 
     public int remove() {
@@ -166,34 +230,38 @@ public class Heap<P extends Comparable, T> {
 
         tree.breathFirstPrint();
         System.out.println("--------------------------------------");
-
-        System.out.println("remove " + tree.remove());
+        int depth = tree.push(30);
         tree.breathFirstPrint();
+        System.out.println("depth " + depth);
         System.out.println("--------------------------------------");
 
-        System.out.println("remove " + tree.remove());
-        tree.breathFirstPrint();
-        System.out.println("--------------------------------------");
+        // System.out.println("remove " + tree.remove());
+        // tree.breathFirstPrint();
+        // System.out.println("--------------------------------------");
 
-        System.out.println("remove " + tree.remove());
-        tree.breathFirstPrint();
-        System.out.println("--------------------------------------");
+        // System.out.println("remove " + tree.remove());
+        // tree.breathFirstPrint();
+        // System.out.println("--------------------------------------");
 
-        System.out.println("remove " + tree.remove());
-        tree.breathFirstPrint();
-        System.out.println("--------------------------------------");
+        // System.out.println("remove " + tree.remove());
+        // tree.breathFirstPrint();
+        // System.out.println("--------------------------------------");
 
-        System.out.println("remove " + tree.remove());
-        tree.breathFirstPrint();
-        System.out.println("--------------------------------------");
+        // System.out.println("remove " + tree.remove());
+        // tree.breathFirstPrint();
+        // System.out.println("--------------------------------------");
 
-        System.out.println("remove " + tree.remove());
-        tree.breathFirstPrint();
-        System.out.println("--------------------------------------");
+        // System.out.println("remove " + tree.remove());
+        // tree.breathFirstPrint();
+        // System.out.println("--------------------------------------");
 
-        System.out.println("last remove " + tree.remove());
-        tree.breathFirstPrint();
-        System.out.println("--------------------------------------");
+        // System.out.println("remove " + tree.remove());
+        // tree.breathFirstPrint();
+        // System.out.println("--------------------------------------");
+
+        // System.out.println("last remove " + tree.remove());
+        // tree.breathFirstPrint();
+        // System.out.println("--------------------------------------");
 
     }
 
