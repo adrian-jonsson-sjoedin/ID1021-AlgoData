@@ -1,9 +1,3 @@
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.text.html.HTMLDocument.RunElement;
-
 public class Heap<P extends Comparable, T> {
     Node root;
 
@@ -54,38 +48,44 @@ public class Heap<P extends Comparable, T> {
 
         }
 
-        private Node remove(Node root) {
+        private Node remove() {
             // if the left branch is empty we promote the right branch to root.
             if (this.left == null) {
-                root = this.right;
-                return root;
+                this.priority = this.right.priority;
+                this.item = this.right.item;
+                this.right = null;
+                this.size--;
+                return this;
             }
             // if the right branch is empty we promote the left branch to root
             if (this.right == null) {
-                root = this.left;
-                return root;
+                this.priority = this.left.priority;
+                this.item = this.left.item;
+                this.left = null;
+                this.size--;
+                return this;
             }
-            if (root.left.priority.compareTo(root.right.priority) < 0) {
-                root.priority = root.left.priority;
-                root.item = root.left.item;
-                root.size--;
-                if (root.left.size == 1) {
-                    root.left = null;
+            if (this.left.priority.compareTo(this.right.priority) < 0) {
+                this.priority = this.left.priority;
+                this.item = this.left.item;
+                this.size--;
+                if (this.left.size == 1) {
+                    this.left = null;
                 } else {
-                    root.left = root.left.remove(root);
+                    this.left = this.left.remove();
                 }
-                return root;
+                return this;
             } else {
-                root.priority = root.right.priority;
-                root.item = root.right.item;
-                root.size--;
-                if (root.right.size == 1) {
-                    root.right = null;
+                this.priority = this.right.priority;
+                this.item = this.right.item;
+                this.size--;
+                if (this.right.size == 1) {
+                    this.right = null;
                 } else {
-                    root.right = root.right.remove(root);
+                    this.right = this.right.remove();
                 }
             }
-            return root;
+            return this;
         }
     }
 
@@ -135,9 +135,13 @@ public class Heap<P extends Comparable, T> {
         if (root == null) {
             System.out.println("Heap is empty");
             return -1;
+        } else if (root.left == null && root.right == null) {
+            int oldRootToBeReturned = (int) this.root.priority;
+            root = null;
+            return oldRootToBeReturned;
         } else {
             int oldRootToBeReturned = (int) this.root.priority;
-            this.root = root.remove(root);
+            root.remove();
             return oldRootToBeReturned;
         }
     }
@@ -155,24 +159,41 @@ public class Heap<P extends Comparable, T> {
         tree.add(20, 20);
         tree.add(8, 8);
         tree.add(22, 22);
-        // tree.add(4, 4);
-        // tree.add(12, 12);
-        // tree.add(10, 10);
-        // tree.add(14, 14);
-
         tree.add(4, 4);
+        tree.add(12, 12);
+        tree.add(10, 10);
+        tree.add(14, 14);
+
         tree.breathFirstPrint();
-        System.out.println("remove " + tree.remove());
-        tree.breathFirstPrint();
+        System.out.println("--------------------------------------");
 
         System.out.println("remove " + tree.remove());
         tree.breathFirstPrint();
+        System.out.println("--------------------------------------");
 
         System.out.println("remove " + tree.remove());
         tree.breathFirstPrint();
+        System.out.println("--------------------------------------");
+
         System.out.println("remove " + tree.remove());
-        // tree.remove();
         tree.breathFirstPrint();
+        System.out.println("--------------------------------------");
+
+        System.out.println("remove " + tree.remove());
+        tree.breathFirstPrint();
+        System.out.println("--------------------------------------");
+
+        System.out.println("remove " + tree.remove());
+        tree.breathFirstPrint();
+        System.out.println("--------------------------------------");
+
+        System.out.println("remove " + tree.remove());
+        tree.breathFirstPrint();
+        System.out.println("--------------------------------------");
+
+        System.out.println("last remove " + tree.remove());
+        tree.breathFirstPrint();
+        System.out.println("--------------------------------------");
 
     }
 
