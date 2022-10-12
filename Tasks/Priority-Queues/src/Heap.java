@@ -25,6 +25,10 @@ public class Heap<T> {
         }
 
         private void add(int prio, T item) {
+            if (this.priority == prio) {
+                this.item = item;
+                return;
+            }
             // we want to move the item and prio of the current node down if the item we
             // want to add has lower priority than the node we're in
             if (prio < this.priority) {
@@ -132,6 +136,7 @@ public class Heap<T> {
     }
 
     public void swapMinNodeUp(Node swapDown, Node swapUp) {
+
         int tempPriority = swapDown.priority;
         T tempItem = swapDown.item;
         swapDown.priority = swapUp.priority;
@@ -227,13 +232,16 @@ public class Heap<T> {
         tree.add(12, 12);
         tree.add(10, 10);
         tree.add(14, 14);
+        tree.breathFirstPrint();
+        System.out.println("--------------------------------------");
 
+        tree.add(4, "Number One Baby!");
         tree.breathFirstPrint();
         System.out.println("--------------------------------------");
-        int depth = tree.push(30);
-        tree.breathFirstPrint();
-        System.out.println("depth " + depth);
-        System.out.println("--------------------------------------");
+        // int depth = tree.push(30);
+        // tree.breathFirstPrint();
+        // System.out.println("depth " + depth);
+        // System.out.println("--------------------------------------");
 
         // System.out.println("remove " + tree.remove());
         // tree.breathFirstPrint();
