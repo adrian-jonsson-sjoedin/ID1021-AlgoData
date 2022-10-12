@@ -1,6 +1,8 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import javax.swing.text.html.HTMLDocument.RunElement;
+
 public class Heap<P extends Comparable, T> {
     Node root;
 
@@ -50,6 +52,41 @@ public class Heap<P extends Comparable, T> {
             }
 
         }
+
+        // does not work if heap only contains 1 or two items. also return the new root
+        // of heap, not the old which is the value we want
+        private Node remove() {
+            // if the left branch is empty we promote the right branch to root.
+            if (this.left == null) {
+                return this.right;
+            }
+            // if the right branch is empty we promote the left branch to root
+            if (this.right == null) {
+                return this.left;
+            }
+            if (this.left.priority.compareTo(this.right.priority) < 0) {
+                this.priority = this.left.priority;
+                this.item = this.left.item;
+                this.size--;
+                if (this.left.size == 1) {
+                    this.left = null;
+                } else {
+                    this.left = this.left.remove();
+                }
+                return this;
+            } else {
+                this.priority = this.right.priority;
+                this.item = this.right.item;
+                this.size--;
+                if (this.right.size == 1) {
+                    this.right = null;
+                } else {
+                    this.right = this.right.remove();
+                }
+                return this;
+            }
+
+        }
     }
 
     public Heap() {
@@ -90,6 +127,15 @@ public class Heap<P extends Comparable, T> {
         }
     }
 
+    public Node remove() {
+        if (root == null) {
+            System.out.println("Heap is empty");
+            return null;
+        } else {
+            return root.remove();
+        }
+    }
+
     public void print() {
         if (root == null) {
             System.out.println("Tree is empty");
@@ -100,20 +146,18 @@ public class Heap<P extends Comparable, T> {
 
     public static void main(String[] args) {
         Heap tree = new Heap();
-        // tree.add(20, 20);
-        // tree.add(8, 8);
+        tree.add(20, 20);
+        tree.add(8, 8);
         // tree.add(22, 22);
         // tree.add(4, 4);
         // tree.add(12, 12);
         // tree.add(10, 10);
         // tree.add(14, 14);
 
-        tree.add(4, "four");
-        tree.add(6, "six");
-        tree.add(8, "eight");
-        tree.add(10, "ten");
-        tree.add(7, "seven");
-        tree.add(11, "eleven");
+        tree.add(4, ".");
+        tree.breathFirstPrint();
+        System.out.println("remove " + tree.remove());
+        // tree.remove();
         tree.breathFirstPrint();
 
     }
