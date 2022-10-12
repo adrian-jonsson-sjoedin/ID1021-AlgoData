@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.html.HTMLDocument.RunElement;
 
 public class Heap<P extends Comparable, T> {
@@ -53,39 +54,38 @@ public class Heap<P extends Comparable, T> {
 
         }
 
-        // does not work if heap only contains 1 or two items. also return the new root
-        // of heap, not the old which is the value we want
-        private Node remove() {
+        private Node remove(Node root) {
             // if the left branch is empty we promote the right branch to root.
             if (this.left == null) {
-                return this.right;
+                root = this.right;
+                return root;
             }
             // if the right branch is empty we promote the left branch to root
             if (this.right == null) {
-                return this.left;
+                root = this.left;
+                return root;
             }
-            if (this.left.priority.compareTo(this.right.priority) < 0) {
-                this.priority = this.left.priority;
-                this.item = this.left.item;
-                this.size--;
-                if (this.left.size == 1) {
-                    this.left = null;
+            if (root.left.priority.compareTo(root.right.priority) < 0) {
+                root.priority = root.left.priority;
+                root.item = root.left.item;
+                root.size--;
+                if (root.left.size == 1) {
+                    root.left = null;
                 } else {
-                    this.left = this.left.remove();
+                    root.left = root.left.remove(root);
                 }
-                return this;
+                return root;
             } else {
-                this.priority = this.right.priority;
-                this.item = this.right.item;
-                this.size--;
-                if (this.right.size == 1) {
-                    this.right = null;
+                root.priority = root.right.priority;
+                root.item = root.right.item;
+                root.size--;
+                if (root.right.size == 1) {
+                    root.right = null;
                 } else {
-                    this.right = this.right.remove();
+                    root.right = root.right.remove(root);
                 }
-                return this;
             }
-
+            return root;
         }
     }
 
@@ -96,6 +96,10 @@ public class Heap<P extends Comparable, T> {
     public void breathFirstPrint() {
         Queue<Node> queue = new Queue<Node>();
         Node current = root;
+        if (current == null) {
+            System.out.println("Heap is empty");
+            return;
+        }
         System.out.println(" key: " + current.priority + "\tvalue: " + current.item);
         if (current.left != null)
             System.out.println("\t left: " + current.left.priority);
@@ -127,12 +131,14 @@ public class Heap<P extends Comparable, T> {
         }
     }
 
-    public Node remove() {
+    public int remove() {
         if (root == null) {
             System.out.println("Heap is empty");
-            return null;
+            return -1;
         } else {
-            return root.remove();
+            int oldRootToBeReturned = (int) this.root.priority;
+            this.root = root.remove(root);
+            return oldRootToBeReturned;
         }
     }
 
@@ -148,13 +154,21 @@ public class Heap<P extends Comparable, T> {
         Heap tree = new Heap();
         tree.add(20, 20);
         tree.add(8, 8);
-        // tree.add(22, 22);
+        tree.add(22, 22);
         // tree.add(4, 4);
         // tree.add(12, 12);
         // tree.add(10, 10);
         // tree.add(14, 14);
 
-        tree.add(4, ".");
+        tree.add(4, 4);
+        tree.breathFirstPrint();
+        System.out.println("remove " + tree.remove());
+        tree.breathFirstPrint();
+
+        System.out.println("remove " + tree.remove());
+        tree.breathFirstPrint();
+
+        System.out.println("remove " + tree.remove());
         tree.breathFirstPrint();
         System.out.println("remove " + tree.remove());
         // tree.remove();
