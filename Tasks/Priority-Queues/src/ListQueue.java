@@ -1,5 +1,6 @@
 import java.security.SecureRandom;
 
+//constant time to add. O(n) to remove
 public class ListQueue {
     Node first;
     Node last;

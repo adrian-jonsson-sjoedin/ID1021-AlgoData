@@ -1,3 +1,4 @@
+//O(n) to add. Constant time to remove. 
 public class QueueList {
     Node first;
     // Node last;
@@ -34,7 +35,7 @@ public class QueueList {
         return this.first == null;
     }
 
-    // constant time to add
+    // O(n) to add
     public void add(Integer item) {
         if (this.first == null) { // add node first if queue is empty
             this.first = new Node(item, null);
