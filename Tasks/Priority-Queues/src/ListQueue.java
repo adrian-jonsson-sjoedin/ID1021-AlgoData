@@ -1,3 +1,5 @@
+import java.security.SecureRandom;
+
 public class ListQueue {
     Node first;
     Node last;
@@ -57,39 +59,87 @@ public class ListQueue {
         }
         Node current = this.first;
         int min = Integer.MAX_VALUE;
-        Node before = null;
+        Node beforeMin = null;
+        boolean isFirst = false;
+        Node prev = null;
         Node after = null;
-        while (current != this.last) {
-            if (current.item > current.next.item && current.next.item < min) {
-                min = current.next.item;
-                before = current;// save the node before min
-                after = current.next.next; // save the node after min
+        while (current != null && current.next != null) {
+            if (current.item < min) {
+                if (current == this.first) {
+                    isFirst = true;
+                    min = current.item;
+
+                } else {
+                    min = current.item;
+                    beforeMin = prev;
+                    after = current.next;
+                    isFirst = false;
+                }
             }
+            prev = current;
             current = current.next;
         }
-        before.next = after;
+        if (isFirst) {
+            this.first = this.first.next;
+        } else {
+            beforeMin.next = after;
+        }
         return min;
+    }
+
+    private static int[] randomNumbers(int from, int to) {
+        int n = to - from + 1;
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = i;
+        }
+        int[] result = new int[n];
+        int x = n;
+        SecureRandom rd = new SecureRandom();
+        for (int i = 0; i < n; i++) {
+            // k is a random index in [0,x]
+            int k = rd.nextInt(x);
+            result[i] = a[k];
+            // we got a value from a[k]. we replace its value by the value from the
+            // last index so that we will not get that value (a[k]) again
+            a[k] = a[x - 1];
+            x--;
+        }
+        return result;
     }
 
     public static void main(String[] args) {
         ListQueue queue = new ListQueue();
-        queue.add(5);
-        queue.add(2);
-        queue.add(3);
-        queue.add(4);
+        int[] a = randomNumbers(0, 150);
+        for (int i : a) {
+            queue.add(i);
+        }
+        // queue.add(1);
+        // queue.add(5);
+        // queue.add(9);
+        // queue.add(3);
+        // queue.add(2);
         queue.print();
-        System.out.println("removed: " + queue.remove());
-        queue.print();
-        System.out.println("removed: " + queue.remove());
-        queue.print();
-        System.out.println("removed: " + queue.remove());
-        queue.print();
-        System.out.println("removed: " + queue.remove());
-        queue.print();
-        queue.add(7);
-        queue.add(0);
-        queue.print();
-        System.out.println("removed: " + queue.remove());
-        queue.print();
+        for (int i = 0; i < 150; i++) {
+            System.out.println("removed: " + queue.remove());
+        }
+        // while (!queue.isEmpty()) {
+        // System.out.println("removed: " + queue.remove());
+        // }
+        // System.out.println("removed: " + queue.remove());
+        // queue.print();
+        // System.out.println("removed: " + queue.remove());
+        // queue.print();
+        // System.out.println("removed: " + queue.remove());
+        // queue.print();
+        // System.out.println("removed: " + queue.remove());
+        // queue.print();
+        // System.out.println("removed: " + queue.remove());
+        // queue.print();
+        // queue.add(7);
+        // queue.add(0);
+        // queue.print();
+        // System.out.println("removed: " + queue.remove());
+        // queue.print();
     }
 }
