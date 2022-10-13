@@ -24,10 +24,10 @@ public class Heap<T> {
                 right.print();
         }
 
-        private void add(int prio, T item) {
+        private int add(int prio, T item, int depth) {
             if (this.priority == prio) {
                 this.item = item;
-                return;
+                return depth;
             }
             // we want to move the item and prio of the current node down if the item we
             // want to add has lower priority than the node we're in
@@ -42,12 +42,14 @@ public class Heap<T> {
             this.size++;
             if (this.left == null) {
                 this.left = new Node(prio, item, 1);
+                return depth;
             } else if (this.right == null) {
                 this.right = new Node(prio, item, 1);
+                return depth;
             } else if (this.right.size < this.left.size) {
-                this.right.add(prio, item);
+                return this.right.add(prio, item, depth + 1);
             } else {
-                this.left.add(prio, item);
+                return this.left.add(prio, item, depth + 1);
             }
 
         }
@@ -127,12 +129,14 @@ public class Heap<T> {
         }
     }
 
-    public void add(int priority, T item) {
+    public int add(int priority, T item) {
+        int depth = 0;
         if (root == null) {
             root = new Node(priority, item, 1);
         } else {
-            root.add(priority, item);
+            depth = root.add(priority, item, 1);
         }
+        return depth;
     }
 
     public void swapMinNodeUp(Node swapDown, Node swapUp) {
