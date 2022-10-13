@@ -1,5 +1,4 @@
 import java.security.SecureRandom;
-import java.security.Timestamp;
 import java.util.Random;
 
 public class Bench<Node> {
@@ -8,27 +7,74 @@ public class Bench<Node> {
         int loops = 1;
         int[] rndUniqueNumbArray = randomUniqueNumbers(0, queueSize);// array with unique elements for benchmarking
                                                                      // ArrayQueue
-        Long[] resultListQueue = benchListQueue(queueSize, loops); // O(n) to remove
-        Long[] resultQueueList = benchQueueList(queueSize, loops); // O(n) to add
-        Long[] resultArrayQueueRemove = benchArrayQueueRemove(queueSize, loops, rndUniqueNumbArray);
-        int benchmark = 3;
+
+        int benchmark = 0;
         switch (benchmark) {
+            case 0 -> {
+                System.out.println();
+            }
             case 1 -> {
+                Long[] resultListQueue = benchListQueue(queueSize, loops); // O(n) to remove
+
                 for (Long long1 : resultListQueue) {
                     System.out.println(long1);
                 }
             }
             case 2 -> {
+                Long[] resultQueueList = benchQueueList(queueSize, loops); // O(n) to add
                 for (Long long2 : resultQueueList) {
                     System.out.println(long2);
                 }
             }
             case 3 -> {
+                Long[] resultArrayQueueRemove = benchArrayQueueRemove(queueSize, loops, rndUniqueNumbArray);
                 for (Long long3 : resultArrayQueueRemove) {
                     System.out.println(long3 / loops);
                 }
             }
         }
+        benchPush();
+        benchAdd();
+    }
+
+    // depth 0 is root level
+    private static void benchPush() {
+        Random rand = new Random();
+        Heap heap = new Heap<Integer>();
+        int[] randomUniqueNumbers = randomUniqueNumbers(0, 100);
+        int[] tenTwenty = new int[10];
+        for (int i = 0; i < 10; i++) {
+            tenTwenty[i] = rand.nextInt(10, 21);// fill with random values between 10-20
+        }
+        for (int i = 0; i < 64; i++) {// add 64 random number in the interval 0-100 to heap
+            heap.add(randomUniqueNumbers[i], randomUniqueNumbers[i]);
+        }
+        // heap.breathFirstPrint();
+        for (int i = 0; i < 20; i++) {
+            int increment = tenTwenty[rand.nextInt(10)];
+            int depth = heap.push(increment);
+            System.out.printf("%d\t %d\n", increment, depth);
+        }
+    }
+
+    private static void benchAdd() {
+        Random rand = new Random();
+        Heap heap = new Heap<Integer>();
+        int[] randomUniqueNumbers = randomUniqueNumbers(0, 100);
+        int[] tenTwenty = new int[10];
+        for (int i = 0; i < 10; i++) {
+            tenTwenty[i] = rand.nextInt(10, 21);// fill with random values between 10-20
+        }
+        for (int i = 0; i < 64; i++) {// add 64 random number in the interval 0-100 to heap
+            heap.add(randomUniqueNumbers[i], randomUniqueNumbers[i]);
+        }
+        heap.breathFirstPrint();
+        for (int i = 0; i < 20; i++) {
+            int increment = tenTwenty[rand.nextInt(10)];
+            int depth = heap.add(increment, increment);
+            System.out.printf("%d\t %d\n", increment, depth);
+        }
+        heap.breathFirstPrint();
     }
 
     // can't get this to work. think the jvm does some kind of optimization which
