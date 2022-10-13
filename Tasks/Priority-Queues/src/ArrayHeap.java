@@ -1,3 +1,4 @@
+import java.security.SecureRandom;
 import java.util.NoSuchElementException;
 
 /*
@@ -128,21 +129,52 @@ public class ArrayHeap {
         }
     }
 
+    // creates an array of specified size and fills it with random unique values
+    private static int[] randomUniqueNumbers(int from, int to) {
+        int n = to - from + 1;
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = i;
+        }
+        int[] result = new int[n];
+        int x = n;
+        SecureRandom rd = new SecureRandom();
+        for (int i = 0; i < n; i++) {
+            // k is a random index in [0,x]
+            int k = rd.nextInt(x);
+            result[i] = a[k];
+            // we got a value from a[k]. we replace its value by the value from the
+            // last index so that we will not get that value (a[k]) again
+            a[k] = a[x - 1];
+            x--;
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
-        ArrayHeap heap = new ArrayHeap(10);
-        heap.add(10);
-        heap.add(2);
-        heap.add(7);
-        heap.add(15);
-        heap.add(90);
-        heap.add(19);
-        heap.add(8);
-        heap.add(22);
-        heap.add(9);
-        heap.printHeap();
-        heap.remove();
-        heap.remove();
-        System.out.println("-------------------");
-        heap.printHeap();
+        ArrayHeap heap = new ArrayHeap(150);
+        int[] a = randomUniqueNumbers(0, 150);
+        for (int i : a) {
+            heap.add(i);
+        }
+        // heap.printHeap();
+        for (int i = 0; i < 150; i++) {
+            System.out.println("removed: " + heap.remove());
+        }
+
+        // heap.add(10);
+        // heap.add(2);
+        // heap.add(7);
+        // heap.add(15);
+        // heap.add(90);
+        // heap.add(19);
+        // heap.add(8);
+        // heap.add(22);
+        // heap.add(9);
+        // heap.printHeap();
+        // heap.remove();
+        // heap.remove();
+        // System.out.println("-------------------");
+        // heap.printHeap();
     }
 }

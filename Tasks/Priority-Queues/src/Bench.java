@@ -4,9 +4,14 @@ import java.util.Random;
 
 public class Bench<Node> {
     public static void main(String[] args) {
-        Long[] resultListQueue = benchListQueue(500, 1000);
-        Long[] resultQueueList = benchQueueList(500, 1000);
-        int benchmark = 2;
+        int queueSize = 500;
+        int loops = 1;
+        int[] rndUniqueNumbArray = randomUniqueNumbers(0, queueSize);// array with unique elements for benchmarking
+                                                                     // ArrayQueue
+        Long[] resultListQueue = benchListQueue(queueSize, loops); // O(n) to remove
+        Long[] resultQueueList = benchQueueList(queueSize, loops); // O(n) to add
+        Long[] resultArrayQueueRemove = benchArrayQueueRemove(queueSize, loops, rndUniqueNumbArray);
+        int benchmark = 3;
         switch (benchmark) {
             case 1 -> {
                 for (Long long1 : resultListQueue) {
@@ -18,28 +23,79 @@ public class Bench<Node> {
                     System.out.println(long2);
                 }
             }
+            case 3 -> {
+                for (Long long3 : resultArrayQueueRemove) {
+                    System.out.println(long3 / loops);
+                }
+            }
         }
     }
 
-    private static int[] randomUniqueNumbers(int from, int to) {
-        int n = to - from + 1;
-        int[] a = new int[n];
-        for (int i = 0; i < n; i++) {
-            a[i] = i;
+    // can't get this to work. think the jvm does some kind of optimization which
+    // affects the time measurements
+    private static Long[] benchArrayQueueRemove(int queueSize, int loops, int[] rndUniqueNumbArray) {
+        Long min = Long.MAX_VALUE;
+        // create an array to hold the min times from the benchmark
+        Long[] timeArray = new Long[queueSize];
+        for (int i = 0; i < queueSize; i++) {
+            timeArray[i] = min;
         }
-        int[] result = new int[n];
-        int x = n;
-        SecureRandom rd = new SecureRandom();
-        for (int i = 0; i < n; i++) {
-            // k is a random index in [0,x]
-            int k = rd.nextInt(x);
-            result[i] = a[k];
-            // we got a value from a[k]. we replace its value by the value from the
-            // last index so that we will not get that value (a[k]) again
-            a[k] = a[x - 1];
-            x--;
+        ArrayHeap temp;
+        Long timeStart;
+        Long timeStop;
+        Long time;
+        for (int j = 0; j < loops; j++) {
+            ArrayHeap arrayList = new ArrayHeap(queueSize);
+            for (int i = 0; i < queueSize; i++) {
+                int item = rndUniqueNumbArray[i];
+                arrayList.add(item);
+            }
+            for (int k = 0; k < queueSize; k++) {
+                timeStart = System.nanoTime();
+
+                System.out.println(arrayList.remove());
+                timeStop = System.nanoTime();
+                time = timeStop - timeStart;
+                // store tim in min time array of we get a lower min value
+                if (time < timeArray[k]) {
+                    timeArray[k] = time;
+                }
+            }
+            temp = arrayList;
         }
-        return result;
+        return timeArray;
+
+    }
+
+    // can't get this to work. think the jvm does some kind of optimization which
+    // affects the time measurements
+    private static int[] benchArrayQueueAdd(int queueSize, int loops, int[] rndUniqueNumbArray) {
+        Long min = Long.MAX_VALUE;
+        // create an array to hold the min times from the benchmark
+        int[] timeArray = new int[queueSize];
+        // for (int i = 0; i < queueSize; i++) {
+        // timeArray[i] = 0;
+        // }
+        ArrayHeap temp;
+        Long timeStart;
+        Long timeStop;
+        Long time;
+        for (int j = 0; j < loops; j++) {
+            ArrayHeap arrayList = new ArrayHeap(queueSize);
+            for (int i = 0; i < queueSize; i++) {
+                int item = rndUniqueNumbArray[i];
+                timeStart = System.nanoTime();
+                arrayList.add(item);
+                timeStop = System.nanoTime();
+                time = timeStop - timeStart;
+                timeArray[i] += time;
+                // if (time < timeArray[i]) {
+                // timeArray[i] = time;
+                // }
+            }
+            temp = arrayList;
+        }
+        return timeArray;
     }
 
     private static Long[] benchListQueue(int queueSize, int loops) {
@@ -105,5 +161,26 @@ public class Bench<Node> {
             }
         }
         return timeArray;
+    }
+
+    private static int[] randomUniqueNumbers(int from, int to) {
+        int n = to - from + 1;
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = i;
+        }
+        int[] result = new int[n];
+        int x = n;
+        SecureRandom rd = new SecureRandom();
+        for (int i = 0; i < n; i++) {
+            // k is a random index in [0,x]
+            int k = rd.nextInt(x);
+            result[i] = a[k];
+            // we got a value from a[k]. we replace its value by the value from the
+            // last index so that we will not get that value (a[k]) again
+            a[k] = a[x - 1];
+            x--;
+        }
+        return result;
     }
 }
