@@ -33,7 +33,7 @@ public class Bench<Node> {
                 }
             }
         }
-        benchPush();
+        // benchPush();
         benchAdd();
     }
 
