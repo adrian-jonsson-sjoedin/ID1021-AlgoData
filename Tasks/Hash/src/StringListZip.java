@@ -87,8 +87,56 @@ public class StringListZip {
     }
 
     public static void main(String[] args) {
+        // read the zip file and store it in the data field
         StringListZip zip = new StringListZip("/home/adrian/KTH/ID1021-AlgoData/Tasks/Hash/src/postnummer.csv");
-        System.out.println(zip.binaryLookup("132 34"));
 
+        int k = 1000;
+        // warm up so that we hopefully get better benchmark results
+        for (int i = 0; i < k; i++) {
+            zip.linearLookup("111 15");
+        }
+
+        long timeStart = System.nanoTime();
+        for (int i = 0; i < k; i++) {
+            zip.linearLookup("111 15");
+        }
+        long timeStop = System.nanoTime();
+        System.out.println("linear 111 15: " + zip.linearLookup("111 15") + (timeStop - timeStart) / k + "ns");
+
+        // warm up so that we hopefully get better benchmark results
+        for (int i = 0; i < k; i++) {
+            zip.linearLookup("984 99");
+        }
+
+        timeStart = System.nanoTime();
+        for (int i = 0; i < k; i++) {
+            zip.linearLookup("984 99");
+        }
+        timeStop = System.nanoTime();
+        System.out.println("linear 984 99: " + zip.linearLookup("984 99") + (timeStop - timeStart) / k + "ns");
+
+        // warm up so that we hopefully get better benchmark results
+        for (int i = 0; i < k; i++) {
+            zip.binaryLookup("111 15");
+        }
+
+        timeStart = System.nanoTime();
+        for (int i = 0; i < k; i++) {
+            zip.binaryLookup("111 15");
+        }
+        timeStop = System.nanoTime();
+        System.out.println("binary 111 15: " + zip.binaryLookup("111 15") + (timeStop - timeStart) / k + "ns");
+
+        // warm up so that we hopefully get better benchmark results
+        for (int i = 0; i < k; i++) {
+            zip.binaryLookup("984 99");
+        }
+
+        timeStart = System.nanoTime();
+        for (int i = 0; i < k; i++) {
+            zip.binaryLookup("984 99");
+        }
+        timeStop = System.nanoTime();
+        System.out.println("binary 984 99: " + zip.binaryLookup("984 99") + (timeStop - timeStart) / k + "ns");
     }
 }
