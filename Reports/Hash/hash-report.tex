@@ -29,13 +29,21 @@
 
 \section{Task}
 \label{task}
-
+In this task we will read a file in CSV format that contains zip codes in an ordered format,  and then look for specific entries 
+using different methods.  
 \begin{itemize}
-    \item 
+    \item Start with writing a linear lookup method and a binary lookup and write a small benchmark that searches for "111 15" 
+    and "994 99" and explain the results. Then change the node class so that it holds an integer as code and re-run the benchmark. 
+    Explain why the execution time has improved
     
-    \item 
+    \item Use the zip codes as keys and store them in an array, using the keys as indexes in the array. Implement a lookup method and 
+    compare its execution time to the binary search method in the previous class.
 
-    \item 
+    \item Take all keys and convert them to a hash and store them in a array. This can be done by taking the key modulo $m$ for some 
+    value $m$. Count the number of collisions for each type and see which $m$ seems to give the least number of collisions. To be able to
+    handle the collisions first implement "buckets" where the buckets are a separate array. Then implement an improved version where the 
+    bucket uses the array with hashes itself. Gather some statistics on how many elements you need to look at before you find the one you're 
+    looking for. Compare the result with the separate array bucket implementation. 
 
 \end{itemize}
 

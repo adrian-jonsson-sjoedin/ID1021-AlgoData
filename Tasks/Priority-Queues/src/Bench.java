@@ -8,7 +8,7 @@ public class Bench<Node> {
         int[] rndUniqueNumbArray = randomUniqueNumbers(0, queueSize);// array with unique elements for benchmarking
                                                                      // ArrayQueue
 
-        int benchmark = 0;
+        int benchmark = 3;
         switch (benchmark) {
             case 0 -> {
                 System.out.println();
@@ -34,7 +34,7 @@ public class Bench<Node> {
             }
         }
         // benchPush();
-        benchAdd();
+        // benchAdd();
     }
 
     // depth 0 is root level
