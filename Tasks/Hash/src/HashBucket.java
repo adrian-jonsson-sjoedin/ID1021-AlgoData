@@ -27,9 +27,10 @@ public class HashBucket {
     }
 
     public HashBucket(String file, int mod) {
-        this.mod = mod;
-        data = new Node[mod]; // the csv file is 9,675 lines
-        this.keys = new int[9676];
+        this.mod = mod; // save the modulo so that it can be used between methods
+        data = new Node[mod]; // make the data array that will hold the nodes the size of modulo that will be
+                              // used to hash the keys.
+        this.keys = new int[9676];// the csv file is 9,675 lines
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
                 new FileInputStream(file), StandardCharsets.UTF_8))) {
             String line;
@@ -37,24 +38,27 @@ public class HashBucket {
             int i = 0;
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
-                code =  Integer.parseInt(row[0].replaceAll("\\s", ""));
+                code = Integer.parseInt(row[0].replaceAll("\\s", ""));
                 insert(code, new Node(code, row[1], Integer.valueOf(row[2])));
                 // row[0] is code, row[1] is name and row[2] is population
                 this.keys[i++] = code;
+
             }
             max = i - 1; // max is number of zip nodes
         } catch (Exception e) {
             System.out.println(" file " + file + " not found");
         }
     }
-    private void insert(Integer code, Node entry){
-     Integer key = code % this.mod;
-     Node current = this.data[key];
-     Node prev = null;
 
-        while (current != null) {
+    private void insert(Integer code, Node entry) {
+        Integer key = code % this.mod; // convert the zip code to a simple hash using modulo
+        Node current = this.data[key];
+        Node prev = null;
+
+        while (current != null) {// if there already is a node placed at the hash index we check if they are the
+                                 // same and if they are we replace the found entry
             if (code.equals(current.code)) {
-                current = current.next; //replace the found entry
+                current = current.next; // replace the found entry
                 break;
             }
             prev = current;
@@ -68,9 +72,20 @@ public class HashBucket {
         entry.next = current;
     }
 
+    public String lookup(Integer key) {
+        Integer index = key % this.mod;
+        Node current = data[index];
+        while (current != null) {
+            if (key.equals(current.code))
+                return current.name;
+            current = current.next;
+        }
+        return null;
+    }
+
     public void collisions(int mod) {
         int[] data = new int[mod];
-        int[] cols = new int[15];
+        int[] cols = new int[10];
         for (int i = 0; i < max; i++) {
             Integer index = keys[i] % mod;
             cols[data[index]]++;
@@ -82,38 +97,55 @@ public class HashBucket {
         }
         System.out.println();
     }
-    public void printKeys() {
-        for (int i = 0; i < keys.length; i++) {
-            System.out.printf("%d\t", keys[i]);
-        }
-    }
 
     public int nrOfCollisions() {
         Set<Integer> store = new HashSet<Integer>();
-        int count=0;
+        int count = 0;
         for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == 0) {
-                System.out.println(0);
-                continue;
-            }
-            if (store.add(keys[i]) == false) {
-            count++;
-                System.out.println("Duplicate element found : " + keys[i]);
+
+            if (store.add(keys[i] % this.mod) == false) {
+                count++;
+                // System.out.println("Duplicate element found : " + keys[i]);
             }
         }
         return count;
     }
 
-
     public static void main(String[] args) {
-        int mod = 15331;
+        int mod = 31327;
+        // 31327 8961 688 25 0 0 0 0 0 0 0. 714 collisions
+        // 28627 8878 770 26 0 0 0 0 0 0 0
+        // 27773 8820 841 13 0 0 0 0 0 0 0
         HashBucket hash = new HashBucket("/home/adrian/KTH/ID1021-AlgoData/Tasks/Hash/src/postnummer.csv", mod);
 
-        System.out.println("number of collisions for mod="+mod + " is "+hash.nrOfCollisions());
-      //  System.out.println(hash.convertToHash("111 12", mod));
+        // System.out.println("number of collisions for mod=" + mod + " is " +
+        // hash.nrOfCollisions());
 
-        // System.out.println(index);
+        // hash.collisions(mod);
 
-        hash.collisions(mod);
+        int k = 1000;
+        // warm up so that we hopefully get better benchmark results
+        for (int i = 0; i < k; i++) {
+            hash.lookup(11115);
+        }
+
+        long timeStart = System.nanoTime();
+        for (int i = 0; i < k; i++) {
+            hash.lookup(11115);
+        }
+        long timeStop = System.nanoTime();
+        System.out.println("Lookup 111 15: " + hash.lookup(11115) + (timeStop - timeStart) / k + "ns");
+
+        // warm up so that we hopefully get better benchmark results
+        for (int i = 0; i < k; i++) {
+            hash.lookup(98499);
+        }
+
+        timeStart = System.nanoTime();
+        for (int i = 0; i < k; i++) {
+            hash.lookup(98499);
+        }
+        timeStop = System.nanoTime();
+        System.out.println("Lookup 984 99: " + hash.lookup(98499) + (timeStop - timeStart) / k + "ns");
     }
 }
