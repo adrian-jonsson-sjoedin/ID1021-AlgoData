@@ -85,6 +85,7 @@ public class Hash {
         System.out.println("max steps was: " + max);
         System.out.println("average steps was " + average / numberOfTimesWeNeedToStep);
         System.out.println("average number of times we needed to step was " + average / this.keys.length);
+        System.out.println("number of times we needed to step " + numberOfTimesWeNeedToStep);
     }
 
     public static void main(String[] args) {

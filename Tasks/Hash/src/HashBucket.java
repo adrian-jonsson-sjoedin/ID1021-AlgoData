@@ -118,10 +118,10 @@ public class HashBucket {
         // 27773 8820 841 13 0 0 0 0 0 0 0
         HashBucket hash = new HashBucket("/home/adrian/KTH/ID1021-AlgoData/Tasks/Hash/src/postnummer.csv", mod);
 
-        // System.out.println("number of collisions for mod=" + mod + " is " +
-        // hash.nrOfCollisions());
+        System.out.println("number of collisions for mod=" + mod + " is " +
+                hash.nrOfCollisions());
 
-        // hash.collisions(mod);
+        hash.collisions(mod);
 
         int k = 1000;
         // warm up so that we hopefully get better benchmark results
