@@ -1,0 +1,9 @@
+quickest route from Malmö to Göteborg : 153 minutes, found in 2ms
+quickest route from Göteborg to Stockholm : 211 minutes, found in 3ms
+quickest route from Malmö to Stockholm : 273 minutes, found in 3ms
+quickest route from Stockholm to Sundsvall : 327 minutes, found in 50ms
+quickest route from Stockholm to Umeå : 517 minutes, found in 41045ms
+quickest route from Göteborg to Sundsvall : 515 minutes, found in 15222ms
+quickest route from Sundsvall to Umeå : 190 minutes, found in 1ms
+quickest route from Umeå to Göteborg : 705 minutes, found in 3ms
+quickest route from Gäteborg to Umeå : probably 705 minutes, gave up after 10 min
