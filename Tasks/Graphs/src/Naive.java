@@ -1,14 +1,12 @@
 public class Naive {
     private static Integer shortest(City from, City to, Integer max) {
         if (max < 0) {
-            System.out.println("max need to be an integer larger than 0");
             return null;
         }
         if (from == to) {
-            System.out.println("Please provide two different cities to get a time");
             return 0;
         }
-        Integer shrt = 0;
+        Integer shrt = null;
         for (int i = 0; i < from.getNeighbor().size(); i++) {
             if (from.getNeighbor().get(i) != null) {
                 Connection conn = from.getNeighbor().get(i);
@@ -36,7 +34,7 @@ public class Naive {
         Integer distance = shortest(map.lookupOrAdd(input[0]), map.lookupOrAdd(input[1]), max);
         long t1 = System.nanoTime();
 
-        if (distance != 0) {
+        if (distance != null) {
             System.out.println("quickest route from " + input[0] + " to " + input[1] + " : "
                     + distance + " minutes, found in " + ((t1 - t0) / 1_000_000) + "ms");
         } else {
