@@ -1,8 +1,8 @@
 public class Connection {
     private final City connectingCity;
-    private final int distance;
+    private final Integer distance;
 
-    public Connection(City connectingCity, int distance) {
+    public Connection(City connectingCity, Integer distance) {
         this.connectingCity = connectingCity;
         this.distance = distance;
     }
@@ -11,7 +11,7 @@ public class Connection {
         return this.connectingCity;
     }
 
-    public int getDistance() {
+    public Integer getDistance() {
         return this.distance;
     }
 }

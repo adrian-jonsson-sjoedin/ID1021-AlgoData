@@ -16,7 +16,7 @@ public class Map {
                 String[] row = line.split(",");
                 City city = lookupOrAdd(row[0]);
                 City neighboringCity = lookupOrAdd(row[1]);
-                int distance = Integer.valueOf(row[2]);
+                Integer distance = Integer.valueOf(row[2]);
                 city.connect(neighboringCity, distance);
                 neighboringCity.connect(city, distance);
             }
@@ -26,7 +26,7 @@ public class Map {
     }
 
     private Integer hash(String name) {
-        int hash = 7;
+        Integer hash = 7;
         for (int i = 0; i < name.length(); i++) {
             hash = (hash * 31 % mod) + name.charAt(i);
         }
@@ -35,7 +35,7 @@ public class Map {
     }
 
     public City lookupOrAdd(String name) {
-        int index = hash(name);
+        Integer index = hash(name);
         while (true) {
             if (cities[index] == null) {
                 break;
