@@ -1,0 +1,156 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{placeins}
+\usepackage[newfloat]{minted}
+\usepackage{caption}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Code Overview}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=black,      
+    urlcolor=blue,
+    citecolor=black,
+}
+\begin{document}
+
+\title{
+    \textbf{Graph Report.}
+}
+\author{Adrian Jonsson Sjödin}
+\date{Fall 2022}
+
+\maketitle
+
+\section{Task}
+\label{task}
+In this task we will read a file in CSV format that contains cities, there neighboring city and the time it takes to travel
+between them. We will then implement different graph methods to find the shortest path between cities.
+\begin{itemize}
+    \item Take the CSV file and turn it into a graph (map) that we will later use to find the shortest path between cities. For this you will
+          need two other classes {\tt City} and {\tt Connection}. Also create a quick lookup method that will be used to add cities
+          to the map and when traversing the graph.
+
+    \item Implement a simple program that finds the shortest path between two cities, regardless if loops and double back paths
+          are present. Do some benchmarks and present the minimum path found, and how long it took to find the path. What are the
+          limitations of this implementation?
+
+    \item Implement another program that finds the shortest path but that can avoid loops by keeping track of which cities we have
+          already passed. Rerun the benchmarks from the previous program and see if there's any improvements.
+
+    \item
+
+\end{itemize}
+
+\section{Method \& Theory}
+\label{method}
+
+
+\section{Result}
+
+\begin{table}[h!]
+    \begin{center}
+        \caption{Linear search and binary search for when the zip code is in {\tt String} format}
+        \label{tab:StringZip}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            linear 111 15 & Stockholm & 92 ns    \\
+            linear 984 99 & Pajala    & 32224 ns \\
+            binary 111 15 & Stockholm & 301 ns   \\
+            binary 984 99 & Pajala    & 141 ns   \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\begin{table}[h!]
+    \begin{center}
+        \caption{Linear search and binary search for when the zip code is in {\tt Integer} format}
+        \label{tab:IntegerZip}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            linear 111 15 & Stockholm & 53 ns    \\
+            linear 984 99 & Pajala    & 11318 ns \\
+            binary 111 15 & Stockholm & 126 ns   \\
+            binary 984 99 & Pajala    & 136 ns   \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+\begin{table}[h!]
+    \begin{center}
+        \caption{Lookup for when the zip-codes are used as indexes}
+        \label{tab:ZipIndexes}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            lookup 111 15 & Stockholm & 51 ns \\
+            lookup 984 99 & Pajala    & 53 ns \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+\begin{table}[h!]
+    \begin{center}
+        \caption{Lookup for when using Hash Buckets}
+        \label{tab:BucketTime}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            lookup 111 15 & Stockholm & 158 ns \\
+            lookup 984 99 & Pajala    & 69 ns  \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+\begin{table}[h!]
+    \begin{center}
+        \caption{Number of collisions when using Hash Buckets}
+        \label{tab:BucketCollisions}
+        \begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+            Modulo & Unique & 2 on same & 3 on same & 4 on same & Utilization \\
+            \hline
+            31327  & 8961   & 688       & 25        & 0         & 29\%        \\
+            28627  & 8878   & 770       & 26        & 0         & 31\%        \\
+            27773  & 8820   & 841       & 13        & 0         & 32\%        \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+\begin{table}[h!]
+    \begin{center}
+        \caption{Lookup for "Slightly better"}
+        \label{tab:HashTime}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            lookup 111 15 & Stockholm & 207 ns \\
+            lookup 984 99 & Pajala    & 63 ns  \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+\begin{table}[h!]
+    \begin{center}
+        \caption{Steps in "Slightly better"}
+        \label{tab:Steps}
+        \begin{tabular}{|cc|}
+            \hline
+            Max Steps                              & 59  \\
+            Average steps when stepping            & 8.9 \\
+            Average numb. of times we need to step & 1.1 \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\FloatBarrier
+\section{Discussion}
+
+
+All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/Hash/src}{GitHub}
+
+\end{document}
