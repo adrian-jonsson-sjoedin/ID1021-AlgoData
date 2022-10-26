@@ -18,17 +18,18 @@ public class Paths {
             if (path[i] == from)
                 return null;
         }
-        path[sp++] = from; //add the city we are in
+        path[sp++] = from; // add the city we are in
         Integer shrt = null;
-        for (int i = 0; i < from.getNeighbor().size(); i++) {//all connecting cities for from
+        for (int i = 0; i < from.getNeighbor().size(); i++) {// all connecting cities for from
             if (from.getNeighbor().get(i) != null) {
-                Connection conn = from.getNeighbor().get(i);*/
+                Connection conn = from.getNeighbor().get(i);
                 Integer distance = shortest(conn.getConnectingCity(), to,
                         (max != null) ? max - conn.getDistance() : null);
                 // Integer distance = shortest(conn.getConnectingCity(), to, max -
                 // conn.getDistance());
                 if ((distance != null) && ((shrt == null) || (shrt > distance + conn.getDistance())))
                     shrt = distance + conn.getDistance();
+                // improvement
                 if ((shrt != null) && ((max == null) || (max > shrt)))
                     max = shrt;
 
@@ -40,7 +41,7 @@ public class Paths {
 
     public static void main(String[] args) {
         String[] input = new String[4];
-        int cities = 9;
+        int cities = 8;
         switch (cities) {
             case 0 -> {
                 input[0] = "Malmö";
