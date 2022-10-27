@@ -87,6 +87,7 @@ the depth first search in the binary tree assignment, in that we utilize recursi
 can end up passing the same cities multiple times in some of the searches which will add to the execution time of the program.
 
 \subsection{Paths}
+\label{sub:paths}
 The above search method works but it isn't very effective. In this search method we make sure to also track the cities that we have already
 been to. This should make it so that we don't get stuck in any loops since we can never take a path that go back to a city that we have
 already passed. This is implemented by simply adding the code provided in the assignment before the code that calls the method recursively.
@@ -94,6 +95,9 @@ An improvement that we can add is to also set the max time to the current found 
 yet traversed but that when we go to the first next station in will be longer than what we set short to.
 
 \section{Result}
+Table \ref{tab:Naive} shows the benchmark data for finding the time it takes to go from one city to another when we don't track cities already
+passed. I also did two different implementation to see the time difference between using a dynamic array in the {\tt City} class as opposed to Java's
+{\tt LinkedList} class.
 
 \begin{table}[h!]
     \begin{center}
@@ -118,6 +122,7 @@ yet traversed but that when we go to the first next station in will be longer th
     \end{center}
 \end{table}
 
+Table \ref{tab:Paths} shows the benchmark data for finding the same paths but taking into account all the cities already traveled to.
 \begin{table}[h!]
     \begin{center}
         \caption{Search time for the {\tt Paths} class with and without the improvement regarding the
@@ -144,8 +149,30 @@ yet traversed but that when we go to the first next station in will be longer th
 
 \FloatBarrier
 \section{Discussion}
+We see in table \ref{tab:Naive} that when we don't track the cities that we have already passed, then some paths are found really fast while other takes much longer.
+The slowest one (that we actually could measure) takes about 41,000 times longer than the fastest one. The reason for this is most likely that the slower ones get
+stuck on more loops, and in our implementation we only break the loop when we pass the max amount of time that we allow the path to take. This means that if we're
+unlucky we could go from loop to loop to loop before finding the shortest path. This will of course make the execution time increase drastically compared to when
+we're lucky and get less, or even no loops.
 
+The reason why I implemented both a linked list version and an array implementation was because I wanted to see if utilizing Java's built in class method to make
+the code more flexible and easier to write would affect the time execution enough to warrant the need to implement my own dynamic expandable array. We can see in
+\ref{tab:Naive} that for the paths that were quick to find the difference is negligible, and for the longer paths it added a few thousands milliseconds. In my
+opinion this is a price worth paying for getting the code more flexible and readable.
 
-All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/Hash/src}{GitHub}
+When we  actually take into account cities already traversed when searching for the shortest path we see in table \ref{tab:Paths} that before the improvement to
+this method, the quickly found paths in the other implementation is still faster, but the ones that took time are significantly faster here. Furthermore with
+this implementation we can actually find any paths that we search for, even Göteborg to Umeå which we couldn't find in the previous method. So while some paths
+take longer than before due to the fact that we have to check our list of already traversed cities each time, this method is clearly to prefer.
+
+As mention in section \ref{sub:paths} we could improve this method further by tracking the current found shortest time and abort any searches through paths that
+is taking longer than that. If we do this we can see in table \ref{tab:Paths} that the execution time gets cut down further and now we even get some paths that are on
+par with the quickest searches from the naive method.
+
+While this implementation works well four this purpose a better implementation would be a method that remembers already found paths and could use these when searching
+for new paths, instead of starting over from scratch each time we search for something. This however is something I will not implement here because of time constraints,
+but is most likely how it would work in real life applications.
+
+All the code can be found here: \href{https://github.com/adrian-jonsson-sjoedin/ID1021-AlgoData/tree/main/Tasks/Graphs/src}{GitHub}
 
 \end{document}
